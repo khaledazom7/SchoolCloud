@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_classroom"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_classroom" />
+        <item
+            android:id="@+id/nav_exam"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_exam" />
+        <item
+            android:id="@+id/nav_logo_off"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_logo_off" />
+        <item
+            android:id="@+id/nav_marks_students"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_marks_students" />
+        <item
+            android:id="@+id/nav_mony_file"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_mony_file" />
+        <item
+            android:id="@+id/nav_presence"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_presence" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_reports" />
+
+        <item
+            android:id="@+id/nav_student_activity"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_student_activity"/>
+" />
+        <item
+            android:id="@+id/nav_student_record"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_student_record" />
+
+    </group>
+</menu>
