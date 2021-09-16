@@ -31,6 +31,7 @@ import java.util.Calendar;
 public class RegisterActivity extends AppCompatActivity {
 
     private String name, email, password, date, accountType;
+    private String userImage= "https://firebasestorage.googleapis.com/v0/b/school-cloud-870b3.appspot.com/o/account%2Faccount.png?alt=media&token=d8a708c5-1b1e-4f9f-b738-db6b1cf3352a";
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser firebaseUser;
@@ -84,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void addNewUserOnDbFirebase() {
         firebaseUser = firebaseAuth.getCurrentUser();
-        User user = new User(name, email, "", "", "", accountType, "", "", date, true);
+        User user = new User(name, email, userImage, "", "", accountType, "", "", date, true);
         // save on cloudFireStore
         DocumentReference documentReference = firebaseFirestore.collection("Users")
                 .document(firebaseUser.getUid());
