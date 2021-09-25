@@ -28,6 +28,7 @@ public class User {
     @SerializedName("status")
     private boolean status;
 
+
     public User() {
     }
 

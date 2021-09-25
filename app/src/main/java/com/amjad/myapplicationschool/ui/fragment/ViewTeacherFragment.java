@@ -1,5 +1,6 @@
 package com.amjad.myapplicationschool.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amjad.myapplicationschool.R;
-import com.amjad.myapplicationschool.databinding.FragmentEditTeacherBinding;
 import com.amjad.myapplicationschool.databinding.FragmentViewTeacherBinding;
+import com.amjad.myapplicationschool.ui.activity.TeacherActivity;
 
 public class ViewTeacherFragment extends Fragment {
 
@@ -33,5 +33,11 @@ public class ViewTeacherFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), TeacherActivity.EditTeacherFragment.class));
+            }
+        });
     }
 }

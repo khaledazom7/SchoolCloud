@@ -5,9 +5,9 @@ import android.os.Bundle;
 
 import com.amjad.myapplicationschool.adapter.UsersAdapter;
 import com.amjad.myapplicationschool.databinding.ActivityAdminBinding;
-import com.amjad.myapplicationschool.databinding.ActivityLoginBinding;
 import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
+import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,6 +47,19 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
         getAllTeachers();
+        logout();
+    }
+
+    private void logout() {
+        binding.buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtils.saveEmail(null,getApplicationContext());
+                PreferenceUtils.saveType("",getApplicationContext());
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
+            }
+        });
 
     }
 
@@ -67,9 +80,9 @@ public class AdminActivity extends AppCompatActivity {
         usersAdapter.onItemSetOnClickListener(new UsersAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String userId = documentSnapshot.getId();
+                String teacherId = documentSnapshot.getId();
                 Intent intent = new Intent(getApplicationContext(), OpenTeacherProfile.class);
-                //intent.putExtra(USER_ID, userId);
+                intent.putExtra("TEACHER_ID", teacherId);
                 startActivity(intent);
             }
         });

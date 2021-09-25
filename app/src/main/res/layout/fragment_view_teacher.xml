@@ -24,16 +24,15 @@
                 android:layout_height="wrap_content"
                 android:text="Status"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDateOfCreate" />
+                app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
             <TextView
                 android:id="@+id/textViewAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:text="Address"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPhone" />
+                app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -54,67 +53,67 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textView31"
                 app:layout_constraintTop_toTopOf="@+id/textView31" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewDateOfBirth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textView32"
                 app:layout_constraintTop_toTopOf="@+id/textView32" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textViewGender"
                 app:layout_constraintTop_toTopOf="@+id/textViewGender" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textView35"
                 app:layout_constraintTop_toBottomOf="@+id/textViewJop" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textViewAddress"
                 app:layout_constraintTop_toTopOf="@+id/textViewAddress" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewDateOfCreate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textView37"
                 app:layout_constraintTop_toTopOf="@+id/textView37" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textViewStatus"
                 app:layout_constraintTop_toTopOf="@+id/textViewStatus" />
 
-            <EditText
+            <TextView
                 android:id="@+id/textViewJop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="TextView"
+                android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/textView34"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -124,16 +123,15 @@
                 android:layout_height="wrap_content"
                 android:text="Gender"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDateOfBirth" />
+                app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
             <TextView
                 android:id="@+id/textView35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:text="Phone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewJop" />
+                app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
             <TextView
                 android:id="@+id/textView34"
@@ -141,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:text="Jop"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewGender" />
 
             <TextView
                 android:id="@+id/textView32"
@@ -149,16 +147,15 @@
                 android:layout_height="wrap_content"
                 android:text="Date of birth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
             <TextView
                 android:id="@+id/textView37"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
                 android:text="Date of create"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
 
             <TextView
                 android:id="@+id/textView31"
@@ -175,13 +172,13 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20">
+                app:layout_constraintTop_toBottomOf="@+id/textViewStatus">
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewMajor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView39"
                     app:layout_constraintTop_toTopOf="@+id/textView39" />
 
@@ -189,19 +186,17 @@
                     android:id="@+id/textView46"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:text="Account Statement"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMedicalRecord" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
                 <TextView
                     android:id="@+id/textView40"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
                     android:text="Degree"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMajor" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
                 <TextView
                     android:id="@+id/textView21"
@@ -211,12 +206,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewExperiences"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView41"
                     app:layout_constraintTop_toTopOf="@+id/textView41" />
 
@@ -224,16 +219,16 @@
                     android:id="@+id/textView44"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="3dp"
                     android:text="Education Courses"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewIdentification" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewSkills"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView42"
                     app:layout_constraintTop_toTopOf="@+id/textView42" />
 
@@ -251,30 +246,30 @@
                     android:layout_height="wrap_content"
                     android:text="Experiences"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewDegree" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewAccountStatement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView46"
                     app:layout_constraintTop_toTopOf="@+id/textView46" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewDegree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView40"
                     app:layout_constraintTop_toTopOf="@+id/textView40" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewMedicalRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView45"
                     app:layout_constraintTop_toTopOf="@+id/textView45" />
 
@@ -284,21 +279,21 @@
                     android:layout_height="wrap_content"
                     android:text="Skills"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewExperiences" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewEducationCourses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView44"
                     app:layout_constraintTop_toTopOf="@+id/textView44" />
 
-                <EditText
+                <TextView
                     android:id="@+id/textViewIdentification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="TextView"
+                    android:text="TextView"
                     app:layout_constraintStart_toEndOf="@+id/textView43"
                     app:layout_constraintTop_toTopOf="@+id/textView43" />
 
@@ -308,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:text="Medical Record"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewEducationCourses" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView44" />
 
                 <TextView
                     android:id="@+id/textView43"
@@ -316,10 +311,9 @@
                     android:layout_height="wrap_content"
                     android:text="Identification"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewSkills" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView42" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/buttonEditTeacher"
                 android:layout_width="wrap_content"
@@ -327,7 +321,6 @@
                 android:text="Edit Teacher"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

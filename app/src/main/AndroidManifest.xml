@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicationSchool">
-        <activity android:name=".ui.activity.OpenTeacherProfile"></activity>
+        <activity android:name=".ui.activity.EditTeacherProfile"></activity>
+        <activity android:name=".ui.activity.OpenTeacherProfile" />
         <activity
             android:name=".ui.activity.TeacherActivity"
             android:label="@string/title_activity_teacher"
