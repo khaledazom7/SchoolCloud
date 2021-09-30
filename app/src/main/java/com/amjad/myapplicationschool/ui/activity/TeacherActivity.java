@@ -35,6 +35,7 @@ public class TeacherActivity extends AppCompatActivity {
         });
     }
 
+
     public static class EditTeacherFragment extends Fragment {
         FragmentEditTeacherBinding binding;
         @Override

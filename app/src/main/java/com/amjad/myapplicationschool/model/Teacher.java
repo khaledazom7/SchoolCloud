@@ -4,7 +4,10 @@ import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Teacher extends User {
+public class Teacher {
+    @Keep
+    @SerializedName("teacherID")
+    private String teacherID;
     @Keep
     @SerializedName("major")
     private String major;
@@ -31,9 +34,11 @@ public class Teacher extends User {
     private String accountStatement;
 
     public Teacher() {
+
     }
 
-    public Teacher(String major, String degree, String experiences, String skills, String identification, String eduCourses, String medicalRecord, String accountStatement) {
+    public Teacher(String teacherID,String major, String degree, String experiences, String skills, String identification, String eduCourses, String medicalRecord, String accountStatement) {
+        this.teacherID = teacherID;
         this.major = major;
         this.degree = degree;
         this.experiences = experiences;
@@ -42,6 +47,14 @@ public class Teacher extends User {
         this.eduCourses = eduCourses;
         this.medicalRecord = medicalRecord;
         this.accountStatement = accountStatement;
+    }
+
+    public String getTeacherID() {
+        return teacherID;
+    }
+
+    public void setTeacherID(String teacherID) {
+        this.teacherID = teacherID;
     }
 
     public String getMajor() {

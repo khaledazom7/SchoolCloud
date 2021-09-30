@@ -29,12 +29,7 @@ public class OpenTeacherProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityOpenTeacherProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), EditTeacherProfile.class));
-            }
-        });
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
@@ -42,6 +37,14 @@ public class OpenTeacherProfile extends AppCompatActivity {
             teacherID = intent.getStringExtra("TEACHER_ID");
             getTeacherInfo(teacherID);
         }
+        binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),EditTeacherProfile.class);
+                intent.putExtra("TEACHER_ID",teacherID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getTeacherInfo(String teacherID) {
