@@ -34,6 +34,7 @@ public class EditTeacherProfile extends AppCompatActivity {
         if (intent != null && intent.hasExtra("TEACHER_ID")) {
             teacherID = intent.getStringExtra("TEACHER_ID");
             getTeacherJobInfo(teacherID);
+            updateTeacherJobInfo();
         }
     }
     private String documentID = "";
@@ -42,7 +43,7 @@ public class EditTeacherProfile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.getResult().isEmpty() || task.getResult() == null) {
-                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "");
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1");
                     createTeacherInfoJob(teacher);
                 }else {
                     documentID = task.getResult().getDocuments().get(0).getId();
@@ -71,23 +72,16 @@ public class EditTeacherProfile extends AppCompatActivity {
             public void onClick(View v) {
 
                 //TODO:: Save new data
-                binding.textViewDegree.getText();
-                binding.textViewExperiences.getText();
-                binding.textViewSkills.getText();
-                binding.textViewIdentification.getText();
-                binding.textViewEducationCourses.getText();
-                binding.textViewMedicalRecord.getText();
-                binding.textViewAccountStatement.getText();
                 firebaseFirestore.collection("Teacher")
                         .document(documentID)
-                        .update("degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString(),
-                                "degree",  binding.textViewMajor.getText().toString()
+                        .update("degree",  binding.textViewDegree.getText().toString(),
+                                "major",  binding.textViewMajor.getText().toString(),
+                                "experiences",  binding.textViewExperiences.getText().toString(),
+                                "skills",  binding.textViewSkills.getText().toString(),
+                                "identification",  binding.textViewIdentification.getText().toString(),
+                                "eduCourses",  binding.textViewEducationCourses.getText().toString(),
+                                "medicalRecord",  binding.textViewMedicalRecord.getText().toString(),
+                                "accountStatement",  binding.textViewAccountStatement.getText().toString()
                                 )
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

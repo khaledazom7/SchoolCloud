@@ -30,7 +30,7 @@ public class Teacher {
     @SerializedName("medicalRecord")
     private String medicalRecord;
     @Keep
-    @SerializedName("accountStatement")
+    @SerializedName("accountStatement")// 1:active , 0:not active ,
     private String accountStatement;
 
     public Teacher() {

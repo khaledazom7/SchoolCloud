@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityOpenTeacherProfileBinding;
+import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class OpenTeacherProfile extends AppCompatActivity {
     private ActivityOpenTeacherProfileBinding binding;
@@ -35,7 +37,8 @@ public class OpenTeacherProfile extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("TEACHER_ID")) {
             teacherID = intent.getStringExtra("TEACHER_ID");
-            getTeacherInfo(teacherID);
+            getTeacherInfoAccount(teacherID);
+            getTeacherJobInfo(teacherID);
         }
         binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +50,7 @@ public class OpenTeacherProfile extends AppCompatActivity {
         });
     }
 
-    private void getTeacherInfo(String teacherID) {
+    private void getTeacherInfoAccount(String teacherID) {
         firebaseFirestore.collection("Users").document(teacherID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -62,8 +65,33 @@ public class OpenTeacherProfile extends AppCompatActivity {
                 binding.textViewStatus.setText(user.isStatus() + "");
             }
         });
-    }
-    //TODO:: REPLACE FRAGMET IN ACTIVITY
+    }private String documentID = "";
 
+    private void getTeacherJobInfo(String teacherID) {
+        firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", teacherID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().isEmpty() || task.getResult() == null) {
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1");
+                    createTeacherInfoJob(teacher);
+                }else {
+                    documentID = task.getResult().getDocuments().get(0).getId();
+                    Teacher teacher = task.getResult().getDocuments().get(0).toObject(Teacher.class);
+                    binding.textViewMajor.setText(teacher.getMajor());
+                    binding.textViewDegree.setText(teacher.getDegree());
+                    binding.textViewExperiences.setText(teacher.getExperiences());
+                    binding.textViewSkills.setText(teacher.getSkills());
+                    binding.textViewIdentification.setText(teacher.getIdentification());
+                    binding.textViewEducationCourses.setText(teacher.getEduCourses());
+                    binding.textViewMedicalRecord.setText(teacher.getMedicalRecord());
+                    binding.textViewAccountStatement.setText(teacher.getAccountStatement());
+                }
+            }
+        });
+    }
+
+    private void createTeacherInfoJob(Teacher teacher) {
+        firebaseFirestore.collection("Teacher").add(teacher);
+    }
 
 }
