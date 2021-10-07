@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 }else {
                     if (typeUser.equals("teacher")) {
-                        startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     } else if (typeUser.equals("admin")) {
                         startActivity(new Intent(getApplicationContext(), AdminActivity.class));
                     }

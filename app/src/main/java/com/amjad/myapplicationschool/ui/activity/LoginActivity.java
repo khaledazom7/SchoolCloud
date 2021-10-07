@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 PreferenceUtils.saveEmail(email, getApplicationContext());
                 PreferenceUtils.saveType(typeUser, getApplicationContext());
                 if (typeUser.equals("teacher")) {
-                    startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else if (typeUser.equals("admin")) {
                     startActivity(new Intent(getApplicationContext(), AdminActivity.class));
                 }

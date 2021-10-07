@@ -62,17 +62,48 @@ public class TeacherActivity extends AppCompatActivity {
 
     private void getCtegories() {
         categoryArrayList = new ArrayList<>();
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
-        categoryArrayList.add(new Category(R.drawable.student, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
+        categoryArrayList.add(new Category(0, R.drawable.classroom, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
+        categoryArrayList.add(new Category(1, R.drawable.recoedstudent, "سجل الطلاب", "إضافة طلاب "));
+        categoryArrayList.add(new Category(2, R.drawable.brecenceandabscence, "الحضور والغياب", "متابعة يومية"));
+        categoryArrayList.add(new Category(3, R.drawable.studentactivity, "نشاط الطلاب", "متابعة الانشطة المدرسية"));
+        categoryArrayList.add(new Category(4, R.drawable.exam, "الاختبارات", "درجات الاختبارات"));
+        categoryArrayList.add(new Category(5, R.drawable.report, "تقرير", "شهادات  وانجازات طالب"));
+        categoryArrayList.add(new Category(6, R.drawable.monyfolder, "الملف المالى", "حساب طالب"));
+        categoryArrayList.add(new Category(7, R.drawable.logout, "تسجيل خروج", ""));
         categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryArrayList);
+        categoryAdapter.onItemSetOnClickListener(new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int categoryID) {
+                switch (categoryID) {
+                    case 0:
+
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+
+                        break;
+                    case 6:
+
+                        break;
+                    case 7:
+
+                        break;
+
+
+                }
+            }
+        });
         binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         binding.recyclerViewCategory.setAdapter(categoryAdapter);
         binding.recyclerViewCategory.setHasFixedSize(true);
@@ -102,7 +133,6 @@ public class TeacherActivity extends AppCompatActivity {
         });
     }
 
-    //TODO:: fix email in major
     private void getTeacherJobInfo(String teacherID) {
         firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", teacherID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -111,6 +141,8 @@ public class TeacherActivity extends AppCompatActivity {
                     if (task.getResult().getDocuments().size() > 0) {
                         Teacher teacher = task.getResult().getDocuments().get(0).toObject(Teacher.class);
                         binding.textViewMajor.setText(teacher.getMajor());
+                    } else {
+                        binding.textViewMajor.setText("أنت غير موظف بعد");
                     }
                 } else {
                     binding.textViewMajor.setText("أنت غير موظف بعد");
