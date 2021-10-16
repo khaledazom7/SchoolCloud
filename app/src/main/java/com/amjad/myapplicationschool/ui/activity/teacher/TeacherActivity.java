@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.activity;
+package com.amjad.myapplicationschool.ui.activity.teacher;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+public class TeacherActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 

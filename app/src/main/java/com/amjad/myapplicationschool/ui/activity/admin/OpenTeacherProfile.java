@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.activity;
+package com.amjad.myapplicationschool.ui.activity.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityOpenTeacherProfileBinding;
 import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
+import com.amjad.myapplicationschool.ui.activity.admin.EditTeacherProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +43,7 @@ public class OpenTeacherProfile extends AppCompatActivity {
         binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),EditTeacherProfile.class);
+                Intent intent = new Intent(getApplicationContext(), EditTeacherProfile.class);
                 intent.putExtra("TEACHER_ID",teacherID);
                 startActivity(intent);
             }

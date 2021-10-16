@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.activity;
+package com.amjad.myapplicationschool.ui.activity.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,7 +71,6 @@ public class EditTeacherProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //TODO:: Save new data
                 firebaseFirestore.collection("Teacher")
                         .document(documentID)
                         .update("degree",  binding.textViewDegree.getText().toString(),

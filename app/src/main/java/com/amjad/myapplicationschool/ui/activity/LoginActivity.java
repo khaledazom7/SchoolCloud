@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityLoginBinding;
-import com.amjad.myapplicationschool.databinding.ActivityRegisterBinding;
+import com.amjad.myapplicationschool.model.Student;
 import com.amjad.myapplicationschool.model.User;
+import com.amjad.myapplicationschool.ui.activity.admin.AdminActivity;
+import com.amjad.myapplicationschool.ui.activity.student.StudentActivity;
+import com.amjad.myapplicationschool.ui.activity.teacher.TeacherActivity;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -81,9 +83,12 @@ public class LoginActivity extends AppCompatActivity {
                 PreferenceUtils.saveEmail(email, getApplicationContext());
                 PreferenceUtils.saveType(typeUser, getApplicationContext());
                 if (typeUser.equals("teacher")) {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
                 } else if (typeUser.equals("admin")) {
                     startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                }
+                else if (typeUser.equals("student")) {
+                    startActivity(new Intent(getApplicationContext(), StudentActivity.class));
                 }
                 finish();
             }

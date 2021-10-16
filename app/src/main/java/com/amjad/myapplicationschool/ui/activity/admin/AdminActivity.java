@@ -1,25 +1,22 @@
-package com.amjad.myapplicationschool.ui.activity;
+package com.amjad.myapplicationschool.ui.activity.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.amjad.myapplicationschool.adapter.UsersAdapter;
 import com.amjad.myapplicationschool.databinding.ActivityAdminBinding;
-import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
+import com.amjad.myapplicationschool.ui.activity.LoginActivity;
+import com.amjad.myapplicationschool.ui.activity.RegisterActivity;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
-import com.amjad.myapplicationschool.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,27 +37,42 @@ public class AdminActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         recyclerView = binding.recyclerViewTeachers;
+        addStudent();
+
+        addTeacher();
+        getAllTeachers();
+        logout();
+    }
+
+    private void addStudent() {
+        binding.buttonAddStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+            }
+        });
+    }
+
+    //-------TEACHER---------
+    private void addTeacher() {
         binding.buttonAddTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
             }
         });
-        getAllTeachers();
-        logout();
     }
 
     private void logout() {
         binding.buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PreferenceUtils.saveEmail(null,getApplicationContext());
-                PreferenceUtils.saveType("",getApplicationContext());
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                PreferenceUtils.saveEmail(null, getApplicationContext());
+                PreferenceUtils.saveType("", getApplicationContext());
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
             }
         });
-
     }
 
     private void getAllTeachers() {

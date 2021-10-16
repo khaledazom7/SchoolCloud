@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.adapter.CategoryAdapter;
+import com.amjad.myapplicationschool.databinding.FragmentClassRoomBinding;
 import com.amjad.myapplicationschool.databinding.FragmentHomeBinding;
 import com.amjad.myapplicationschool.model.Category;
 import com.amjad.myapplicationschool.model.Teacher;
@@ -48,7 +50,8 @@ public class HomeFragment extends Fragment {
     private FirebaseUser firebaseUser;
     private String userID;
     private Uri userImage;
-
+    private Fragment fragment;
+    private FragmentTransaction fragmentTransaction;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater,container,false);
@@ -63,6 +66,7 @@ public class HomeFragment extends Fragment {
         getTeacherJobInfo(userID);
         return view;
     }
+
     private void getCtegories() {
         categoryArrayList = new ArrayList<>();
         categoryArrayList.add(new Category(0, R.drawable.classroom, "الفصول الدراسية", "ابتدائي اعدادي ثانوي"));
@@ -79,38 +83,44 @@ public class HomeFragment extends Fragment {
             public void onItemClick(int categoryID) {
                 switch (categoryID) {
                     case 0:
-                        startActivity(new Intent(getContext(),SplashActivity.class));
+                        fragment = new ClassRoomFragment();
                         break;
                     case 1:
-                        startActivity(new Intent(getContext(),LoginActivity.class));
+                        fragment = new StudentRecordFragment();
                         break;
                     case 2:
-
+                        fragment = new PresenceFragment();
                         break;
                     case 3:
-
+                        fragment = new StudentActivityFragment();
                         break;
                     case 4:
-
+                        fragment = new ExamFragment();
                         break;
                     case 5:
-
+                        fragment = new ReportsFragment();
                         break;
                     case 6:
-
+                        fragment = new MonyFileFragment();
                         break;
                     case 7:
-
+                        fragment = new ReportsFragment();
                         break;
-
-
                 }
+                setFragment(fragment);
             }
         });
         binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.recyclerViewCategory.setAdapter(categoryAdapter);
         binding.recyclerViewCategory.setHasFixedSize(true);
     }
+
+    private void setFragment(Fragment fragment){
+        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment,null) .commit();
+    }
+
+
     private void getTeacherInfoAccount(String teacherID) {
         firebaseFirestore.collection("Users").document(teacherID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
