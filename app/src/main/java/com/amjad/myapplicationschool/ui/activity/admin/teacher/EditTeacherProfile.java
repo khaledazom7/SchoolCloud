@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.activity.admin;
+package com.amjad.myapplicationschool.ui.activity.admin.teacher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

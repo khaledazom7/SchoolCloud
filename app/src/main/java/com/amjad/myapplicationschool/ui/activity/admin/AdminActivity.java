@@ -8,6 +8,7 @@ import com.amjad.myapplicationschool.databinding.ActivityAdminBinding;
 import com.amjad.myapplicationschool.model.User;
 import com.amjad.myapplicationschool.ui.activity.LoginActivity;
 import com.amjad.myapplicationschool.ui.activity.RegisterActivity;
+import com.amjad.myapplicationschool.ui.activity.admin.teacher.OpenTeacherProfile;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 

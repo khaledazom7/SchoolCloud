@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.activity.admin;
+package com.amjad.myapplicationschool.ui.activity.admin.teacher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.view.View;
 import com.amjad.myapplicationschool.databinding.ActivityOpenTeacherProfileBinding;
 import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
-import com.amjad.myapplicationschool.ui.activity.admin.EditTeacherProfile;
+import com.amjad.myapplicationschool.ui.activity.admin.teacher.EditTeacherProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

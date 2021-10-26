@@ -8,36 +8,31 @@ public class Teacher {
     @Keep
     @SerializedName("teacherID")
     private String teacherID;
-    @Keep
     @SerializedName("major")
     private String major;
-    @Keep
     @SerializedName("degree")
     private String degree;
-    @Keep
     @SerializedName("experiences")
     private String experiences;
-    @Keep
     @SerializedName("skills")
     private String skills;
-    @Keep
     @SerializedName("identification")
     private String identification;
-    @Keep
     @SerializedName("eduCourses")
     private String eduCourses;
-    @Keep
     @SerializedName("medicalRecord")
     private String medicalRecord;
-    @Keep
-    @SerializedName("accountStatement")// 1:active , 0:not active ,
+    @SerializedName("accountStatement")
     private String accountStatement;
+    @SerializedName("callInfo")//responsibleStudentCurrentPlace
+    private String callInfo;
 
     public Teacher() {
 
     }
 
-    public Teacher(String teacherID,String major, String degree, String experiences, String skills, String identification, String eduCourses, String medicalRecord, String accountStatement) {
+    public Teacher(String teacherID,String major, String degree, String experiences, String skills
+            , String identification, String eduCourses, String medicalRecord, String accountStatement, String callInfo) {
         this.teacherID = teacherID;
         this.major = major;
         this.degree = degree;
@@ -47,6 +42,7 @@ public class Teacher {
         this.eduCourses = eduCourses;
         this.medicalRecord = medicalRecord;
         this.accountStatement = accountStatement;
+        this.callInfo = callInfo;
     }
 
     public String getTeacherID() {
@@ -119,5 +115,13 @@ public class Teacher {
 
     public void setAccountStatement(String accountStatement) {
         this.accountStatement = accountStatement;
+    }
+
+    public String getCallInfo() {
+        return callInfo;
+    }
+
+    public void setCallInfo(String callInfo) {
+        this.callInfo = callInfo;
     }
 }

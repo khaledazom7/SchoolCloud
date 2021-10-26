@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicationSchool">
-        <activity android:name=".ui.activity.student.StudentActivity"></activity>
-        <activity android:name=".ui.activity.admin.EditTeacherProfile" />
-        <activity android:name=".ui.activity.admin.OpenTeacherProfile" />
+        <activity android:name=".ui.activity.admin.student.activity.OpentStudentProfile"></activity>
+        <activity android:name=".ui.activity.admin.student.activity.EditStudentActivity" />
+        <activity android:name=".ui.activity.student.StudentActivity" />
+        <activity android:name=".ui.activity.admin.teacher.EditTeacherProfile" />
+        <activity android:name=".ui.activity.admin.teacher.OpenTeacherProfile" />
         <activity
             android:name=".ui.activity.admin.AdminActivity"
             android:label="@string/title_activity_admin"
