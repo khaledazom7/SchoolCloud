@@ -3,21 +3,32 @@ package com.amjad.myapplicationschool.ui.activity.admin;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.amjad.myapplicationschool.adapter.FragmentPageAdapter;
 import com.amjad.myapplicationschool.adapter.UsersAdapter;
 import com.amjad.myapplicationschool.databinding.ActivityAdminBinding;
 import com.amjad.myapplicationschool.model.User;
 import com.amjad.myapplicationschool.ui.activity.LoginActivity;
 import com.amjad.myapplicationschool.ui.activity.RegisterActivity;
+import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
+import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.CurrentClassFragment;
+import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.FirstSchoolFragment;
+import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.PersonalInformationFragment;
+import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.ResponsibleStudentFragment;
+import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.StudentSecondaryOInfoFragment;
 import com.amjad.myapplicationschool.ui.activity.admin.teacher.OpenTeacherProfile;
+import com.amjad.myapplicationschool.ui.fragment.admin.StudentFragment;
+import com.amjad.myapplicationschool.ui.fragment.admin.TeacherFragment;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,8 +39,10 @@ public class AdminActivity extends AppCompatActivity {
     private ActivityAdminBinding binding;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    private FragmentPageAdapter fragmentPageAdapter;
     private RecyclerView recyclerView;
-
+    private String[] titles = new String[]{"Teacher", "Student"};
+    private Fragment[] fragments = new Fragment[]{new TeacherFragment(), new StudentFragment()};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +50,16 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        recyclerView = binding.recyclerViewTeachers;
         addStudent();
-
         addTeacher();
-        getAllTeachers();
         logout();
+        preparFragmentPager();
+    }
+
+    private void preparFragmentPager(){
+        fragmentPageAdapter = new FragmentPageAdapter(AdminActivity.this, titles, fragments);
+        binding.viewPagerId.setAdapter(fragmentPageAdapter);
+        new TabLayoutMediator(binding.tabLayout, binding.viewPagerId, ((tab, position) -> tab.setText(titles[position]))).attach();
     }
 
     private void addStudent() {
@@ -76,31 +93,5 @@ public class AdminActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllTeachers() {
-        Query query = FirebaseFirestore.getInstance().collection("Users")
-                .whereEqualTo("userType", "teacher");
-        /*query.whereEqualTo("visibility", true)
-                .whereEqualTo("newsStatus", true)
-                .orderBy("date", Query.Direction.DESCENDING);*/
-        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query, User.class)
-                .build();
-        fillTeacherRecycleAdapter(options);
-    }
 
-    private void fillTeacherRecycleAdapter(FirestoreRecyclerOptions<User> options) {
-        UsersAdapter usersAdapter = new UsersAdapter(options);
-        usersAdapter.onItemSetOnClickListener(new UsersAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String teacherId = documentSnapshot.getId();
-                Intent intent = new Intent(getApplicationContext(), OpenTeacherProfile.class);
-                intent.putExtra("TEACHER_ID", teacherId);
-                startActivity(intent);
-            }
-        });
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(usersAdapter);
-        usersAdapter.startListening();
-    }
 }

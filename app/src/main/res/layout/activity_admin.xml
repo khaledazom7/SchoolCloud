@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.admin.AdminActivity">
 
-
     <Button
         android:id="@+id/buttonAddTeacher"
         android:layout_width="0dp"
@@ -26,14 +25,25 @@
         app:layout_constraintStart_toEndOf="@+id/buttonAddTeacher"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTeachers"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddTeacher" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_id"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddTeacher" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+    </androidx.viewpager2.widget.ViewPager2>
+
 
     <Button
         android:id="@+id/buttonLogout"

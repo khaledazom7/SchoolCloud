@@ -43,7 +43,7 @@ public class EditTeacherProfile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.getResult().isEmpty() || task.getResult() == null) {
-                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1");
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1","");
                     createTeacherInfoJob(teacher);
                 }else {
                     documentID = task.getResult().getDocuments().get(0).getId();
