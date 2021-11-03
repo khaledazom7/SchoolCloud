@@ -64,6 +64,9 @@ public class Student {
     @SerializedName("accountStatement")
     private String accountStatement;
 
+    public Student() {
+    }
+
     public Student(String studentID, String dateInterSchool, String ageInterSchool, String ageInOctober
             , String firstClass, String currentClass, String dateCurrentClass, String typeCurrentClass
             , String majorCurrentClass, ArrayList<String> returnedClass, String dateOfBirth

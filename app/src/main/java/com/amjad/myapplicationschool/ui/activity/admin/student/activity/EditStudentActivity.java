@@ -23,9 +23,8 @@ public class EditStudentActivity extends AppCompatActivity {
     private ActivityEditStudentBinding binding;
     private FragmentPageAdapter fragmentPageAdapter;
     private String studentID;
-    private String[] titles = new String[]{"First School", "Current Class", "Student Information", "Responsible Student", "More Information"};
-    private Fragment[] fragments = new Fragment[]{new FirstSchoolFragment(), new CurrentClassFragment()
-            , new PersonalInformationFragment(), new ResponsibleStudentFragment()
+    private String[] titles = new String[]{"Student Information", "Responsible Student", "Current Class", "First School", "More Information"};
+    private Fragment[] fragments = new Fragment[]{new PersonalInformationFragment(), new ResponsibleStudentFragment(), new CurrentClassFragment(), new FirstSchoolFragment()
             , new StudentSecondaryOInfoFragment()};
 
     @Override
@@ -40,8 +39,6 @@ public class EditStudentActivity extends AppCompatActivity {
         fragmentPageAdapter = new FragmentPageAdapter(EditStudentActivity.this, titles, fragments);
         binding.viewPagerId.setAdapter(fragmentPageAdapter);
         new TabLayoutMediator(binding.tabLayout, binding.viewPagerId, ((tab, position) -> tab.setText(titles[position]))).attach();
-
-
     }
 
 

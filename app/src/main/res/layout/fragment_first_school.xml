@@ -5,16 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.admin.student.fragment.FirstSchoolFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First student" />
+        android:hint="hint">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>
