@@ -17,11 +17,13 @@ public class Student {
     private String ageInterSchool;
     @SerializedName("ageInOctober")
     private String ageInOctober;
-    @SerializedName("firstClass")
+    @SerializedName("firstClass") //name
     private String firstClass;
     // Student information about current class
-    @SerializedName("currentClass")
+    @SerializedName("currentClass") // name
     private String currentClass;
+    @SerializedName("sectionCurrentClass") // currentClass(a), currentClass(b), currentClass(c)
+    private String sectionCurrentClass;
     @SerializedName("dateCurrentClass")
     private String dateCurrentClass;
     @SerializedName("typeCurrentClass") // primary, secondary, secondary
@@ -68,7 +70,7 @@ public class Student {
     }
 
     public Student(String studentID, String dateInterSchool, String ageInterSchool, String ageInOctober
-            , String firstClass, String currentClass, String dateCurrentClass, String typeCurrentClass
+            , String firstClass, String currentClass, String sectionCurrentClass, String dateCurrentClass, String typeCurrentClass
             , String majorCurrentClass, ArrayList<String> returnedClass, String dateOfBirth
             , String birthCertificate, String identification, String countryBirth, String countryOrigin
             , String respStName, String respStCountry, String respStVillage, String respStCurrentPlace
@@ -80,6 +82,7 @@ public class Student {
         this.ageInOctober = ageInOctober;
         this.firstClass = firstClass;
         this.currentClass = currentClass;
+        this.sectionCurrentClass = sectionCurrentClass;
         this.dateCurrentClass = dateCurrentClass;
         this.typeCurrentClass = typeCurrentClass;
         this.majorCurrentClass = majorCurrentClass;
@@ -147,6 +150,14 @@ public class Student {
 
     public void setCurrentClass(String currentClass) {
         this.currentClass = currentClass;
+    }
+
+    public String getSectionCurrentClass() {
+        return sectionCurrentClass;
+    }
+
+    public void setSectionCurrentClass(String sectionCurrentClass) {
+        this.sectionCurrentClass = sectionCurrentClass;
     }
 
     public String getDateCurrentClass() {
