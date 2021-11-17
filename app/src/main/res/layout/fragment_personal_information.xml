@@ -19,16 +19,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <ImageView
                 android:id="@+id/imageStudent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="16dp"
+                android:src="@drawable/ic_baseline_account_circle_150"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -44,61 +43,65 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:hint="hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextStudentName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="hint" />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:hint="Date of Birth">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextStudentDateOfBirth"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="hint" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:hint="Identification Student">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextIdentification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Identification Student" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:hint="Country of Origin">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCountryOrigin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Country of Origin" />
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:hint="Country of Birth" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCountryBirth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Country of Birth" />
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

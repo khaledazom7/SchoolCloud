@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityRegisterBinding;
+import com.amjad.myapplicationschool.model.Student;
+import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,14 +26,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private String name, email, password, date, accountType;
-    private String userImage= "https://firebasestorage.googleapis.com/v0/b/school-cloud-870b3.appspot.com/o/account%2Faccount.png?alt=media&token=d8a708c5-1b1e-4f9f-b738-db6b1cf3352a";
+    private String name, email, password, date;
+    private String accountType = "";
+    private String userImage = "https://firebasestorage.googleapis.com/v0/b/school-cloud-870b3.appspot.com/o/account%2Faccount.png?alt=media&token=d8a708c5-1b1e-4f9f-b738-db6b1cf3352a";
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseUser firebaseUser;
@@ -69,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    userID = task.getResult().getUser().getUid();
                     addNewUserOnDbFirebase();
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to register! Try again!", Toast.LENGTH_SHORT).show();
@@ -91,6 +97,48 @@ public class RegisterActivity extends AppCompatActivity {
                 .document(firebaseUser.getUid());
         documentReference.set(user);
         verifyEmail();
+        createUserByType(accountType);
+    }
+
+    private String userID = "";
+    private ArrayList<String> arrayListReturendClass = new ArrayList<>();
+    private ArrayList<String> arrayListSkills = new ArrayList<>();
+    Teacher teacher = null;
+    Student student = null;
+
+    private void createUserByType(String accountType) {
+        switch (accountType) {
+            case "student":
+                student = new Student(userID, "", "", "", ""
+                        , "", "", "", "", ""
+                        , arrayListReturendClass, "", "", "", "", ""
+                        , "", "", "", "", ""
+                        , "", "", arrayListSkills, "", "1");
+                firebaseFirestore.collection("Student").whereEqualTo("studentID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                firebaseFirestore.collection("Student").add(student);
+                            }
+                        }
+                    }
+                });
+                break;
+            case "teacher":
+                teacher = new Teacher(userID, "", "", "", "", "", "", "", "1", "");
+                firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                firebaseFirestore.collection("Teacher").add(teacher);
+                            }
+                        }
+                    }
+                });
+                break;
+        }
     }
 
     private void verifyEmail() {

@@ -61,5 +61,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //Chip tag view
     implementation 'com.github.jakebonk:ChipView:1.0.1'
+    //Mid map https://github.com/JagarYousef/Mindo
 
 }
