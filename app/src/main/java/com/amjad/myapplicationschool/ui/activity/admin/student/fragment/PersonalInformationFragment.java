@@ -37,6 +37,8 @@ public class PersonalInformationFragment extends Fragment {
     private FragmentPersonalInformationBinding binding;
     private FirebaseFirestore firebaseFirestore;
     private EditStudentActivity activity;
+    private User studentAccount;
+    private Student student;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,13 +60,29 @@ public class PersonalInformationFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
 
         //Fill student info
-        User studentAccount = activity.getUser();
-        Student student = activity.getStudent();
+        studentAccount = activity.getUser();
+        student = activity.getStudent();
+        fillStudentInfo();
+        updateUser();
+    }
 
+    private void fillStudentInfo() {
         Picasso.get().load(studentAccount.getUserImage()).into(binding.imageStudent);
         binding.editTextStudentName.setText(studentAccount.getName());
         binding.editTextStudentDateOfBirth.setText(student.getDateOfBirth());
+        binding.editTextIdentification.setText(student.getIdentification());
+        binding.editTextCountryOrigin.setText(student.getCountryOrigin());
+        binding.editTextCountryBirth.setText(student.getCountryBirth());
+    }
 
+    private void updateUser() {
+        binding.button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                studentAccount.setName(binding.editTextStudentName.getText().toString());
+                activity.setUser(studentAccount);
+            }
+        });
     }
 
 

@@ -45,7 +45,7 @@
                         android:id="@+id/editTextDateInterSchool"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Date Inter School" />
+                        android:hint="Date Enter School" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +58,7 @@
                         android:id="@+id/editTextAgeInterSchool"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Age Inter First School" />
+                        android:hint="Age Enter First School" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

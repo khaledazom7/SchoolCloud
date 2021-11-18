@@ -21,6 +21,19 @@ public class PreferenceUtils {
         return preferences.getString(Constants.KEY_EMAIL, null);
     }
 
+    public static boolean saveId(String id, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.KEY_ID, id);
+        editor.apply();
+        return true;
+    }
+
+    public static String getId(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(Constants.KEY_ID, "");
+    }
+
     public static boolean saveType(String password, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();

@@ -43,6 +43,7 @@ public class AdminActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String[] titles = new String[]{"Teacher", "Student"};
     private Fragment[] fragments = new Fragment[]{new TeacherFragment(), new StudentFragment()};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

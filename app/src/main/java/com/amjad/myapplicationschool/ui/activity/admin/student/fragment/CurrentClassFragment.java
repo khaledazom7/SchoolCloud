@@ -14,13 +14,18 @@ import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.FragmentCurrentClassBinding;
+import com.amjad.myapplicationschool.model.Student;
+import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class CurrentClassFragment extends Fragment {
 
     private FragmentCurrentClassBinding binding;
+    private FirebaseFirestore firebaseFirestore;
+    private EditStudentActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,5 +54,15 @@ public class CurrentClassFragment extends Fragment {
         data.add("Seventh Item");
         SimpleChipAdapter adapter = new SimpleChipAdapter(data);
         cvTag.setAdapter(adapter);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        activity = (EditStudentActivity) getActivity();
+
+        //Fill student info
+        Student student = activity.getStudent();
+        binding.editTextStudentDateCurrentClass.setText(student.getDateCurrentClass());
+        binding.editTextStudentTypeCurrentClass.setText(student.getTypeCurrentClass());
+        binding.editTextMajorCurrentClass.setText(student.getMajorCurrentClass());
+
     }
 }

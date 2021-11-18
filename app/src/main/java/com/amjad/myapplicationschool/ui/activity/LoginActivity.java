@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 String typeUser = user.getUserType();
                 String email = user.getEmail();
                 PreferenceUtils.saveEmail(email, getApplicationContext());
+                PreferenceUtils.saveId(userID, getApplicationContext());
                 PreferenceUtils.saveType(typeUser, getApplicationContext());
                 if (typeUser.equals("teacher")) {
                     startActivity(new Intent(getApplicationContext(), TeacherActivity.class));

@@ -12,10 +12,15 @@ import android.view.ViewGroup;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.FragmentStudentSecondaryOInfoBinding;
+import com.amjad.myapplicationschool.model.Student;
+import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class StudentSecondaryOInfoFragment extends Fragment {
 
     private FragmentStudentSecondaryOInfoBinding binding;
+    private FirebaseFirestore firebaseFirestore;
+    private EditStudentActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,5 +37,11 @@ public class StudentSecondaryOInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        activity = (EditStudentActivity) getActivity();
+
+        //Fill student info
+        Student student = activity.getStudent();
+
     }
 }

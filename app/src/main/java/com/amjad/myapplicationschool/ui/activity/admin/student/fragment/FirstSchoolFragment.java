@@ -12,9 +12,14 @@ import android.view.ViewGroup;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.FragmentFirstSchoolBinding;
+import com.amjad.myapplicationschool.model.Student;
+import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirstSchoolFragment extends Fragment {
     private FragmentFirstSchoolBinding binding;
+    private FirebaseFirestore firebaseFirestore;
+    private EditStudentActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,14 @@ public class FirstSchoolFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        activity = (EditStudentActivity) getActivity();
+
+        //Fill student info
+        Student student = activity.getStudent();
+        binding.editTextDateInterSchool.setText(student.getDateInterSchool());
+        binding.editTextAgeInterSchool.setText(student.getAgeInterSchool());
+        binding.editTextAgeInOctober.setText(student.getAgeInOctober());
 
     }
 
