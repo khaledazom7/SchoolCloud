@@ -20,7 +20,7 @@ public class FirstSchoolFragment extends Fragment {
     private FragmentFirstSchoolBinding binding;
     private FirebaseFirestore firebaseFirestore;
     private EditStudentActivity activity;
-
+    private Student student;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +41,26 @@ public class FirstSchoolFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
 
         //Fill student info
-        Student student = activity.getStudent();
+         student = activity.getStudent();
+        fillStudentInfo();
+        updateUser();
+    }
+
+    private void fillStudentInfo() {
         binding.editTextDateInterSchool.setText(student.getDateInterSchool());
         binding.editTextAgeInterSchool.setText(student.getAgeInterSchool());
         binding.editTextAgeInOctober.setText(student.getAgeInOctober());
-
     }
 
-
+    private void updateUser() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                student.setDateCurrentClass(binding.editTextDateInterSchool.getText().toString());
+                student.setTypeCurrentClass(binding.editTextAgeInterSchool.getText().toString());
+                student.setMajorCurrentClass(binding.editTextAgeInOctober.getText().toString());
+                activity.setStudent(student);
+            }
+        });
+    }
 }

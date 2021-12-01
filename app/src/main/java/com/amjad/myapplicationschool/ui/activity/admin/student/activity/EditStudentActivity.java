@@ -44,6 +44,7 @@ public class EditStudentActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private User user;
     private Student student;
+    private String studentDocId = "";
 
     @SuppressLint("ShowToast")
     @Override
@@ -61,7 +62,7 @@ public class EditStudentActivity extends AppCompatActivity {
        String adminId = PreferenceUtils.getId(this);
         firebaseFirestore.collection("Users").document(adminId).set(user);*/
         getStudentAccountInfo();
-
+        getStudentDocId();
     }
 
     private void preparFragmentsPager() {
@@ -127,6 +128,18 @@ public class EditStudentActivity extends AppCompatActivity {
 
     public void setStudent(Student student) {
         this.student = student;
+        firebaseFirestore.collection("Student").document(studentDocId).set(student);
+    }
 
+    public void getStudentDocId() {
+        firebaseFirestore.collection("Student").whereEqualTo("studentID", studentID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    //Toast.makeText(getApplicationContext(), studentID + studentDocId, Toast.LENGTH_SHORT).show();
+                    studentDocId = task.getResult().getDocuments().get(0).getId();
+                }
+            }
+        });
     }
 }

@@ -23,6 +23,7 @@ public class ResponsibleStudentFragment extends Fragment {
     private FragmentResponsibleStudentBinding binding;
     private FirebaseFirestore firebaseFirestore;
     private EditStudentActivity activity;
+    private  Student student;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,12 @@ public class ResponsibleStudentFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
 
         //Fill student info
-        Student student = activity.getStudent();
+        student = activity.getStudent();
+        fillStudentInfo();
+        updateUser();
+    }
+
+    private void fillStudentInfo() {
         binding.editTextResponsibleName.setText(student.getRespStName());
         binding.editTextResponsibleCuntry.setText(student.getRespStCountry());
         binding.editTextVillage.setText(student.getRespStVillage());
@@ -51,6 +57,21 @@ public class ResponsibleStudentFragment extends Fragment {
         binding.editTextPhone.setText(student.getRespStMainPhone());
         binding.editTextSecondaryPhone.setText(student.getRespStSecondaryPhone());
         binding.editTextCardNumber.setText(student.getRespStRationCardNumber());
+    }
 
+    private void updateUser() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                student.setRespStName(binding.editTextResponsibleName.getText().toString());
+                student.setRespStCountry(binding.editTextResponsibleCuntry.getText().toString());
+                student.setRespStVillage(binding.editTextVillage.getText().toString());
+                student.setRespStCurrentPlace(binding.editTextCountryCurrentPlace.getText().toString());
+                student.setRespStMainPhone(binding.editTextPhone.getText().toString());
+                student.setRespStSecondaryPhone(binding.editTextSecondaryPhone.getText().toString());
+                student.setRespStRationCardNumber(binding.editTextCardNumber.getText().toString());
+                activity.setStudent(student);
+            }
+        });
     }
 }

@@ -26,6 +26,7 @@ public class CurrentClassFragment extends Fragment {
     private FragmentCurrentClassBinding binding;
     private FirebaseFirestore firebaseFirestore;
     private EditStudentActivity activity;
+    private Student student;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class CurrentClassFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentCurrentClassBinding.inflate(inflater,container,false);
+        binding = FragmentCurrentClassBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -59,10 +60,26 @@ public class CurrentClassFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
 
         //Fill student info
-        Student student = activity.getStudent();
+        student = activity.getStudent();
+        fillStudentInfo();
+        updateUser();
+    }
+
+    private void fillStudentInfo() {
         binding.editTextStudentDateCurrentClass.setText(student.getDateCurrentClass());
         binding.editTextStudentTypeCurrentClass.setText(student.getTypeCurrentClass());
         binding.editTextMajorCurrentClass.setText(student.getMajorCurrentClass());
+    }
 
+    private void updateUser() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                student.setDateCurrentClass(binding.editTextStudentDateCurrentClass.getText().toString());
+                student.setTypeCurrentClass(binding.editTextStudentTypeCurrentClass.getText().toString());
+                student.setMajorCurrentClass(binding.editTextMajorCurrentClass.getText().toString());
+                activity.setStudent(student);
+            }
+        });
     }
 }

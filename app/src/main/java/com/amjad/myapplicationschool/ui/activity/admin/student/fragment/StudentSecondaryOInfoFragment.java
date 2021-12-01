@@ -21,6 +21,7 @@ public class StudentSecondaryOInfoFragment extends Fragment {
     private FragmentStudentSecondaryOInfoBinding binding;
     private FirebaseFirestore firebaseFirestore;
     private EditStudentActivity activity;
+    private Student student;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,20 @@ public class StudentSecondaryOInfoFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
 
         //Fill student info
-        Student student = activity.getStudent();
+        student = activity.getStudent();
+        fillStudentInfo();
+        updateUser();
+    }
 
+    private void fillStudentInfo() {
+       }
+
+    private void updateUser() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setStudent(student);
+            }
+        });
     }
 }

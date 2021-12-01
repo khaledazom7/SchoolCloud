@@ -76,11 +76,17 @@ public class PersonalInformationFragment extends Fragment {
     }
 
     private void updateUser() {
-        binding.button3.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 studentAccount.setName(binding.editTextStudentName.getText().toString());
+                studentAccount.setDateOfBirth(binding.editTextStudentDateOfBirth.getText().toString());
                 activity.setUser(studentAccount);
+
+                student.setIdentification(binding.editTextIdentification.getText().toString());
+                student.setCountryOrigin(binding.editTextCountryOrigin.getText().toString());
+                student.setCountryBirth(binding.editTextCountryBirth.getText().toString());
+                activity.setStudent(student);
             }
         });
     }
