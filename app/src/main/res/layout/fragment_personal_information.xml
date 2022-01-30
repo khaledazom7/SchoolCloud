@@ -61,6 +61,8 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextStudentDateOfBirth"
+                        android:inputType="date"
+                        android:drawableRight="@drawable/ic_outline_date_range_24"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>

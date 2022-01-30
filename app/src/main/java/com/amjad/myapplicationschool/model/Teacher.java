@@ -1,8 +1,12 @@
 package com.amjad.myapplicationschool.model;
 
+import android.content.Context;
+
 import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class Teacher {
     @Keep

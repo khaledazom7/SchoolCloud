@@ -1,17 +1,22 @@
 package com.amjad.myapplicationschool.ui.activity.admin.student.fragment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.amjad.myapplicationschool.R;
@@ -31,6 +36,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 public class PersonalInformationFragment extends Fragment {
 
@@ -64,12 +71,13 @@ public class PersonalInformationFragment extends Fragment {
         student = activity.getStudent();
         fillStudentInfo();
         updateUser();
+        calenderViewDate();
     }
 
     private void fillStudentInfo() {
         Picasso.get().load(studentAccount.getUserImage()).into(binding.imageStudent);
         binding.editTextStudentName.setText(studentAccount.getName());
-        binding.editTextStudentDateOfBirth.setText(student.getDateOfBirth());
+        binding.editTextStudentDateOfBirth.setText(studentAccount.getDateOfBirth());
         binding.editTextIdentification.setText(student.getIdentification());
         binding.editTextCountryOrigin.setText(student.getCountryOrigin());
         binding.editTextCountryBirth.setText(student.getCountryBirth());
@@ -81,6 +89,7 @@ public class PersonalInformationFragment extends Fragment {
             public void onClick(View v) {
                 studentAccount.setName(binding.editTextStudentName.getText().toString());
                 studentAccount.setDateOfBirth(binding.editTextStudentDateOfBirth.getText().toString());
+                Log.d("getDateOfBirth",studentAccount.getDateOfBirth());
                 activity.setUser(studentAccount);
 
                 student.setIdentification(binding.editTextIdentification.getText().toString());
@@ -89,6 +98,49 @@ public class PersonalInformationFragment extends Fragment {
                 activity.setStudent(student);
             }
         });
+    }
+
+    private void calenderViewDate() {
+        Calendar mcurrentDate = Calendar.getInstance();
+        int mYear = mcurrentDate.get(Calendar.YEAR);
+        int mMonth = mcurrentDate.get(Calendar.MONTH) + 1;
+        int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+        //binding.editTextStudentDateOfBirth.setText(mYear + "/" + mMonth + "/" + mDay);
+        binding.editTextStudentDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        String selectedDate = selectedyear + "/" + (selectedmonth + 1) + "/" + selectedday;
+                        binding.editTextStudentDateOfBirth.setText(selectedDate);
+                    }
+                }, mYear, mMonth - 1, mDay);
+                mDatePicker.show();
+            }
+        });
+        /*binding.editTextStudentDateOfBirth.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+                if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
+                    if (event.getRawX() >= (binding.editTextStudentDateOfBirth.getRight() - binding.editTextStudentDateOfBirth.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                                String selectedDate = selectedyear + "/" + (selectedmonth + 1) + "/" + selectedday;
+
+                            }
+                        }, mYear, mMonth - 1, mDay);
+                        mDatePicker.show();
+                    }
+
+
+                }
+                return false;
+            }
+        });*/
     }
 
 
