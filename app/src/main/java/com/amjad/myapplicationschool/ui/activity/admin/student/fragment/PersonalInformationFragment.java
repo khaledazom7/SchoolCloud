@@ -1,16 +1,23 @@
 package com.amjad.myapplicationschool.ui.activity.admin.student.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,24 +27,29 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.amjad.myapplicationschool.R;
-import com.amjad.myapplicationschool.databinding.FragmentFirstSchoolBinding;
 import com.amjad.myapplicationschool.databinding.FragmentPersonalInformationBinding;
 import com.amjad.myapplicationschool.model.Student;
 import com.amjad.myapplicationschool.model.User;
-import com.amjad.myapplicationschool.ui.activity.LoginActivity;
-import com.amjad.myapplicationschool.ui.activity.admin.AdminActivity;
 import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
-import com.amjad.myapplicationschool.ui.activity.student.StudentActivity;
-import com.amjad.myapplicationschool.ui.activity.teacher.TeacherActivity;
-import com.amjad.myapplicationschool.utils.PreferenceUtils;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Calendar;
+import java.util.Random;
+
+import id.zelory.compressor.Compressor;
 
 public class PersonalInformationFragment extends Fragment {
 
@@ -46,6 +58,13 @@ public class PersonalInformationFragment extends Fragment {
     private EditStudentActivity activity;
     private User studentAccount;
     private Student student;
+
+    private String imageName;
+    private Bitmap compressor;
+    private String downloadUri;
+    private Uri imageUri = null;
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    private static final int MAX_LENGTH = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,7 @@ public class PersonalInformationFragment extends Fragment {
         fillStudentInfo();
         updateUser();
         calenderViewDate();
+        selectImage();
     }
 
     private void fillStudentInfo() {
@@ -87,9 +107,10 @@ public class PersonalInformationFragment extends Fragment {
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                studentAccount.setUserImage(downloadUri);
                 studentAccount.setName(binding.editTextStudentName.getText().toString());
                 studentAccount.setDateOfBirth(binding.editTextStudentDateOfBirth.getText().toString());
-                Log.d("getDateOfBirth",studentAccount.getDateOfBirth());
+                Log.d("getDateOfBirth", studentAccount.getDateOfBirth());
                 activity.setUser(studentAccount);
 
                 student.setIdentification(binding.editTextIdentification.getText().toString());
@@ -118,30 +139,128 @@ public class PersonalInformationFragment extends Fragment {
                 mDatePicker.show();
             }
         });
-        /*binding.editTextStudentDateOfBirth.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-                if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-                    if (event.getRawX() >= (binding.editTextStudentDateOfBirth.getRight() - binding.editTextStudentDateOfBirth.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        DatePickerDialog mDatePicker = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                                String selectedDate = selectedyear + "/" + (selectedmonth + 1) + "/" + selectedday;
-
-                            }
-                        }, mYear, mMonth - 1, mDay);
-                        mDatePicker.show();
-                    }
-
-
-                }
-                return false;
-            }
-        });*/
     }
 
 
+    private void selectImage() {
+        binding.imageStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cropImage();
+            }
+        });
+    }
+
+    private void cropImage() {
+        imageUri = null;
+        imageName = "";
+        downloadUri = "";
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+        } else {
+            //TODO: Must add activity on Manifest file add this line code
+            //            AndroidManifest.xml
+            //            <activity
+            //            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            //            android:theme="@style/Base.Theme.AppCompat" />
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    //.setMinCropResultSize(512,512)
+                    .setAspectRatio(2, 2)
+                    .start(getContext(), PersonalInformationFragment.this);//getContext(), PersonalInformationFragment.this
+        }
+    }
+
+    //Crop image
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == getActivity().RESULT_OK) {
+                imageUri = result.getUri();
+               /* byte[] decodedString = Base64.decode(imageUri+"", Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                binding.imageStudent.setImageBitmap(decodedByte);*/
+                //imageViewItem.setImageURI(imageUri);
+                postImageOnFireBase();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    private void postImageOnFireBase() {
+        if (imageUri != null) {
+            compressAndNameImage();
+            ByteArrayOutputStream byteArrayInputStream = new ByteArrayOutputStream();
+            compressor.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayInputStream);
+            byte[] thumpData = byteArrayInputStream.toByteArray();
+            StorageReference filePath = storageReference.child("account/students/").child(imageName);
+            UploadTask uploadTask = filePath.putBytes(thumpData);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                           // Toast.makeText(getContext(), filePath.getDownloadUrl() + "", Toast.LENGTH_LONG).show();
+                           // downloadUri = filePath.getDownloadUrl() + "";
+                            return filePath.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                downloadUri = task.getResult().toString();
+                               // Toast.makeText(getContext(), downloadUri + "", Toast.LENGTH_LONG).show();
+                                Picasso.get().load(downloadUri).into(binding.imageStudent);
+                            }
+                        }
+
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                }
+            });
+        } else {
+            //Please upload image
+        }
+    }
+
+    //Name image
+    public static String random() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(MAX_LENGTH);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++) {
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
+    }
+
+    private void compressAndNameImage() {
+        imageName = random() + ".jpg";
+        File imageFile = new File(imageUri.getPath());
+        try {
+            compressor = new Compressor(getContext())//Ctrl + F  search,
+                    .setMaxHeight(240)
+                    .setMaxWidth(360)
+                    .setQuality(5)
+                    .compressToBitmap(imageFile);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }

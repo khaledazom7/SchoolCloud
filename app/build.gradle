@@ -62,5 +62,11 @@ dependencies {
     //Chip tag view
     implementation 'com.github.jakebonk:ChipView:1.0.1'
     //Mid map https://github.com/JagarYousef/Mindo
+    //crop image to upload
+    //implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+' //Alt + Enter => update library
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    //compressor image
+    //implementation 'id.zelory:compressor:2.1.0'
+    implementation 'id.zelory:compressor:2.1.1'
 
 }
