@@ -191,7 +191,7 @@ public class PersonalInformationFragment extends Fragment {
             }
         }
     }
-//asdad
+//asdaddcddccffdfd
     private void postImageOnFireBase() {
         if (imageUri != null) {
             compressAndNameImage();
