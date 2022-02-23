@@ -49,8 +49,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextStudentName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -61,10 +60,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextStudentDateOfBirth"
-                        android:inputType="date"
-                        android:drawableRight="@drawable/ic_outline_date_range_24"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_outline_date_range_24"
+                        android:inputType="date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -76,8 +75,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextIdentification"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                         />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -89,21 +87,19 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCountryOrigin"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                         />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Country of Birth" >
+                    android:hint="Country of Birth">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCountryBirth"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,10 +113,10 @@
                         android:layout_width="?actionBarSize"
                         android:layout_height="?actionBarSize"
                         android:adjustViewBounds="true"
+                        android:src="@drawable/ic_baseline_wallpaper_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@tools:sample/backgrounds/scenic" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textView11"
@@ -145,30 +141,30 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintIdentification"
+                    android:id="@+id/constraintPreviousClassCertificate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp">
 
                     <ImageView
-                        android:id="@+id/imageViewIdentification"
+                        android:id="@+id/imageViewPreviousClassCertificate"
                         android:layout_width="?actionBarSize"
                         android:layout_height="?actionBarSize"
                         android:adjustViewBounds="true"
+                        android:src="@drawable/ic_baseline_wallpaper_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@tools:sample/backgrounds/scenic" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Birth Identification"
+                        android:text="Previous Class Certificate"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/imageViewUploadIdentification"
-                        app:layout_constraintStart_toEndOf="@+id/imageViewIdentification"
+                        app:layout_constraintStart_toEndOf="@+id/imageViewPreviousClassCertificate"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView

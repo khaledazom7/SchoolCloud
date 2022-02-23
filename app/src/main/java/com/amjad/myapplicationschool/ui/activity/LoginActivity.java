@@ -74,10 +74,10 @@ public class LoginActivity extends AppCompatActivity {
     private void checkUserType() {
         firebaseUser = firebaseAuth.getCurrentUser();
         String userID = firebaseUser.getUid();
-        firebaseFirestore.collection("Users").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("Users").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
                 String typeUser = user.getUserType();
                 String email = user.getEmail();
                 PreferenceUtils.saveEmail(email, getApplicationContext());

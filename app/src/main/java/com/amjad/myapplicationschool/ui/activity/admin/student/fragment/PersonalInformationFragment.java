@@ -61,10 +61,16 @@ public class PersonalInformationFragment extends Fragment {
 
     private String imageName;
     private Bitmap compressor;
-    private String downloadUri;
+    private String studentImage;
+    private String imageCertification;
+    private String imagePreviousClassCertificate;
     private Uri imageUri = null;
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private static final int MAX_LENGTH = 100;
+    private int image_type = 0; //0:student personal image, 1:Cirtifecation image, 2:Identfication
+    private String image_path = "account/students/";
+    private int image_h = 2;
+    private int image_w = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,19 +101,24 @@ public class PersonalInformationFragment extends Fragment {
     }
 
     private void fillStudentInfo() {
-        Picasso.get().load(studentAccount.getUserImage()).into(binding.imageStudent);
+        studentImage = studentAccount.getUserImage();
+        imageCertification = student.getBirthCertificate();
+        imagePreviousClassCertificate = student.getPreviousClassCertificate();
+        Picasso.get().load(studentImage).into(binding.imageStudent);
         binding.editTextStudentName.setText(studentAccount.getName());
         binding.editTextStudentDateOfBirth.setText(studentAccount.getDateOfBirth());
         binding.editTextIdentification.setText(student.getIdentification());
         binding.editTextCountryOrigin.setText(student.getCountryOrigin());
         binding.editTextCountryBirth.setText(student.getCountryBirth());
+        Picasso.get().load(imageCertification).into(binding.imageViewCirtefication);
+        Picasso.get().load(imagePreviousClassCertificate).into(binding.imageViewPreviousClassCertificate);
     }
 
     private void updateUser() {
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                studentAccount.setUserImage(downloadUri);
+                studentAccount.setUserImage(studentImage);
                 studentAccount.setName(binding.editTextStudentName.getText().toString());
                 studentAccount.setDateOfBirth(binding.editTextStudentDateOfBirth.getText().toString());
                 Log.d("getDateOfBirth", studentAccount.getDateOfBirth());
@@ -116,6 +127,8 @@ public class PersonalInformationFragment extends Fragment {
                 student.setIdentification(binding.editTextIdentification.getText().toString());
                 student.setCountryOrigin(binding.editTextCountryOrigin.getText().toString());
                 student.setCountryBirth(binding.editTextCountryBirth.getText().toString());
+                student.setBirthCertificate(imageCertification);
+                student.setPreviousClassCertificate(imagePreviousClassCertificate);
                 activity.setStudent(student);
             }
         });
@@ -141,20 +154,43 @@ public class PersonalInformationFragment extends Fragment {
         });
     }
 
-
     private void selectImage() {
         binding.imageStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                image_type = 0;
+                image_path = "account/students/";
+                image_h = 2;
+                image_w = 2;
                 cropImage();
             }
         });
+        binding.constraintCirtifecation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                image_type = 1;
+                image_path = "students/certification";
+                image_h = 4;
+                image_w = 2;
+                cropImage();
+            }
+        });
+        binding.constraintPreviousClassCertificate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                image_type = 2;
+                image_path = "students/PreviousClassCertificate";
+                image_h = 4;
+                image_w = 2;
+                cropImage();
+            }
+        });
+
     }
 
     private void cropImage() {
         imageUri = null;
         imageName = "";
-        downloadUri = "";
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
@@ -167,7 +203,7 @@ public class PersonalInformationFragment extends Fragment {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     //.setMinCropResultSize(512,512)
-                    .setAspectRatio(2, 2)
+                    .setAspectRatio(image_w, image_h)
                     .start(getContext(), PersonalInformationFragment.this);//getContext(), PersonalInformationFragment.this
         }
     }
@@ -191,14 +227,15 @@ public class PersonalInformationFragment extends Fragment {
             }
         }
     }
-//asdaddcddccffdfd
+
+    //asdaddcddccffdfd
     private void postImageOnFireBase() {
         if (imageUri != null) {
             compressAndNameImage();
             ByteArrayOutputStream byteArrayInputStream = new ByteArrayOutputStream();
             compressor.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayInputStream);
             byte[] thumpData = byteArrayInputStream.toByteArray();
-            StorageReference filePath = storageReference.child("account/students/").child(imageName);
+            StorageReference filePath = storageReference.child(image_path).child(imageName);
             UploadTask uploadTask = filePath.putBytes(thumpData);
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -210,17 +247,31 @@ public class PersonalInformationFragment extends Fragment {
                                 throw task.getException();
                             }
 
-                           // Toast.makeText(getContext(), filePath.getDownloadUrl() + "", Toast.LENGTH_LONG).show();
-                           // downloadUri = filePath.getDownloadUrl() + "";
+                            // Toast.makeText(getContext(), filePath.getDownloadUrl() + "", Toast.LENGTH_LONG).show();
+                            // studentImage = filePath.getDownloadUrl() + "";
                             return filePath.getDownloadUrl();
                         }
                     }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
-                                downloadUri = task.getResult().toString();
-                               // Toast.makeText(getContext(), downloadUri + "", Toast.LENGTH_LONG).show();
-                                Picasso.get().load(downloadUri).into(binding.imageStudent);
+                                switch (image_type) {
+                                    case 0:
+                                        studentImage = task.getResult().toString();
+                                        // Toast.makeText(getContext(), studentImage + "", Toast.LENGTH_LONG).show();
+                                        Picasso.get().load(studentImage).into(binding.imageStudent);
+                                        break;
+                                    case 1:
+                                        imageCertification = task.getResult().toString();
+                                        // Toast.makeText(getContext(), studentImage + "", Toast.LENGTH_LONG).show();
+                                        Picasso.get().load(imageCertification).into(binding.imageViewCirtefication);
+                                        break;
+                                    case 2:
+                                        imagePreviousClassCertificate = task.getResult().toString();
+                                        // Toast.makeText(getContext(), studentImage + "", Toast.LENGTH_LONG).show();
+                                        Picasso.get().load(imagePreviousClassCertificate).into(binding.imageViewPreviousClassCertificate);
+                                        break;
+                                }
                             }
                         }
 

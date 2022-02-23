@@ -37,6 +37,8 @@ public class Student {
     private String dateOfBirth;
     @SerializedName("birthCertificate")
     private String birthCertificate;
+    @SerializedName("previousClassCertificate")
+    private String previousClassCertificate;
     @SerializedName("identification")
     private String identification;
     @SerializedName("countryBirth")
@@ -72,7 +74,7 @@ public class Student {
     public Student(String studentID, String dateInterSchool, String ageInterSchool, String ageInOctober
             , String firstClass, String currentClass, String sectionCurrentClass, String dateCurrentClass, String typeCurrentClass
             , String majorCurrentClass, ArrayList<String> returnedClass, String dateOfBirth
-            , String birthCertificate, String identification, String countryBirth, String countryOrigin
+            , String birthCertificate, String previousClassCertificate, String identification, String countryBirth, String countryOrigin
             , String respStName, String respStCountry, String respStVillage, String respStCurrentPlace
             , String respStMainPhone, String respStSecondaryPhone, String respStRationCardNumber
             , ArrayList<String> skills, String medicalRecord, String accountStatement) {
@@ -89,6 +91,7 @@ public class Student {
         this.returnedClass = returnedClass;
         this.dateOfBirth = dateOfBirth;
         this.birthCertificate = birthCertificate;
+        this.previousClassCertificate = previousClassCertificate;
         this.identification = identification;
         this.countryBirth = countryBirth;
         this.countryOrigin = countryOrigin;
@@ -206,6 +209,14 @@ public class Student {
 
     public void setBirthCertificate(String birthCertificate) {
         this.birthCertificate = birthCertificate;
+    }
+
+    public String getPreviousClassCertificate() {
+        return previousClassCertificate;
+    }
+
+    public void setPreviousClassCertificate(String previousClassCertificate) {
+        this.previousClassCertificate = previousClassCertificate;
     }
 
     public String getIdentification() {

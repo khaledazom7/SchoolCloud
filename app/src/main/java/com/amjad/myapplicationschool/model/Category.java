@@ -6,7 +6,7 @@ public class Category {
     private String title;
     private String subTitle;
 
-    public Category(int id,int image, String title, String subTitle) {
+    public Category(int id, int image, String title, String subTitle) {
         this.id = id;
         this.image = image;
         this.title = title;

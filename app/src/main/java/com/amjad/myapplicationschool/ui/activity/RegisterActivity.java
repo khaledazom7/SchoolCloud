@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
             case "student":
                 student = new Student(userID, "", "", "", ""
                         , "", "", "", "", ""
-                        , arrayListReturendClass, "", "", "", "", ""
+                        , arrayListReturendClass, "", "", "", "", "",""
                         , "", "", "", "", ""
                         , "", "", arrayListSkills, "", "1");
                 firebaseFirestore.collection("Student").whereEqualTo("studentID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
