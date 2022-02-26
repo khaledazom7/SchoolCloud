@@ -92,14 +92,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.allyants.chipview.ChipView
-                        android:id="@+id/chipReturnedClass"
-                        android:layout_width="0dp"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipReturnedClasss"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spinnerReturnedClass" />
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerReturnedClass"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

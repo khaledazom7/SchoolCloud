@@ -22,4 +22,5 @@
     <style name="Theme.MyApplicationSchool.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyApplicationSchool.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

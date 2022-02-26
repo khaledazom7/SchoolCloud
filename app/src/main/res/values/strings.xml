@@ -31,4 +31,30 @@
     <string name="title_activity_teacher">TeacherActivity</string>
     <string name="add_new_teacher">Add New Teacher</string>
     <string name="add_new_student">Add New Student</string>
+
+    <!--Array-->
+    <string-array name="classes">
+        <item>الصف الأول</item>
+        <item>الصف الثاني</item>
+        <item>الصف الثالث</item>
+    </string-array>
+    <!--Array-->
+
+    <!--Spinner-->
+    <string-array name="spinnerCurrentClass">
+        <item>الصف الأول</item>
+        <item>الصف الثاني</item>
+        <item>الصف الثالث</item>
+    </string-array>
+    <!--Spinner-->
+    <string-array name="sectionCurrentClass">
+        <item>(أ)</item>
+        <item>(ب)</item>
+        <item>(ج)</item>
+        <item>(د)</item>
+        <item>(ه)</item>
+        <item>(و)</item>
+        <item>(ز)</item>
+        <item>(ي)</item>
+    </string-array>
 </resources>
