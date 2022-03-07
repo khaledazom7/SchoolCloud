@@ -41,8 +41,8 @@ public class CurrentClassFragment extends Fragment {
     private String currentClass = "";
     private String sectionCurrentClass = "";
     private ArrayList<String> returnedClass;
-    private SimpleChipAdapter adapterChip;
     ArrayList<Object> data;
+    private SimpleChipAdapter adapterChip;
     ArrayList<String> data2;
 
     @Override

@@ -35,7 +35,7 @@ import java.util.Calendar;
 public class RegisterActivity extends AppCompatActivity {
 
     private String name, email, password, date;
-    private String accountType = "";
+    private String accountType = "student";
     private String userImage = "https://firebasestorage.googleapis.com/v0/b/school-cloud-870b3.appspot.com/o/account%2Faccount.png?alt=media&token=d8a708c5-1b1e-4f9f-b738-db6b1cf3352a";
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;

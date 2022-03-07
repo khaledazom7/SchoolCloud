@@ -17,8 +17,8 @@ public class Student {
     private String ageInterSchool;
     @SerializedName("ageInOctober")
     private String ageInOctober;
-    @SerializedName("firstClass") //name
-    private String firstClass;
+    @SerializedName("firstSchoolName") //name
+    private String firstSchoolName;
     // Student information about current class
     @SerializedName("currentClass") // name
     private String currentClass;
@@ -72,7 +72,7 @@ public class Student {
     }
 
     public Student(String studentID, String dateInterSchool, String ageInterSchool, String ageInOctober
-            , String firstClass, String currentClass, String sectionCurrentClass, String dateCurrentClass, String typeCurrentClass
+            , String firstSchoolName, String currentClass, String sectionCurrentClass, String dateCurrentClass, String typeCurrentClass
             , String majorCurrentClass, ArrayList<String> returnedClass, String dateOfBirth
             , String birthCertificate, String previousClassCertificate, String identification, String countryBirth, String countryOrigin
             , String respStName, String respStCountry, String respStVillage, String respStCurrentPlace
@@ -82,7 +82,7 @@ public class Student {
         this.dateInterSchool = dateInterSchool;
         this.ageInterSchool = ageInterSchool;
         this.ageInOctober = ageInOctober;
-        this.firstClass = firstClass;
+        this.firstSchoolName = firstSchoolName;
         this.currentClass = currentClass;
         this.sectionCurrentClass = sectionCurrentClass;
         this.dateCurrentClass = dateCurrentClass;
@@ -139,12 +139,12 @@ public class Student {
         this.ageInOctober = ageInOctober;
     }
 
-    public String getFirstClass() {
-        return firstClass;
+    public String getFirstSchoolName() {
+        return firstSchoolName;
     }
 
-    public void setFirstClass(String firstClass) {
-        this.firstClass = firstClass;
+    public void setFirstSchoolName(String firstSchoolName) {
+        this.firstSchoolName = firstSchoolName;
     }
 
     public String getCurrentClass() {

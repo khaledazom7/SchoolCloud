@@ -47,6 +47,7 @@ public class FirstSchoolFragment extends Fragment {
     }
 
     private void fillStudentInfo() {
+        binding.editTextFirstSchoolName.setText(student.getFirstSchoolName());
         binding.editTextDateInterSchool.setText(student.getDateInterSchool());
         binding.editTextAgeInterSchool.setText(student.getAgeInterSchool());
         binding.editTextAgeInOctober.setText(student.getAgeInOctober());
@@ -56,6 +57,7 @@ public class FirstSchoolFragment extends Fragment {
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                student.setFirstSchoolName(binding.editTextFirstSchoolName.getText().toString());
                 student.setDateCurrentClass(binding.editTextDateInterSchool.getText().toString());
                 student.setTypeCurrentClass(binding.editTextAgeInterSchool.getText().toString());
                 student.setMajorCurrentClass(binding.editTextAgeInOctober.getText().toString());

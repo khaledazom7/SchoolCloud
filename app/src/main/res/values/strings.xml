@@ -47,6 +47,15 @@
         <item>الصف الثالث</item>
     </string-array>
     <!--Spinner-->
+
+    <!--Spinner-->
+    <string-array name="spinnerSkills">
+        <item>كرة قدم</item>
+        <item>سباحة</item>
+        <item>رسم</item>
+        <item>تنس</item>
+    </string-array>
+    <!--Spinner-->
     <string-array name="sectionCurrentClass">
         <item>(أ)</item>
         <item>(ب)</item>

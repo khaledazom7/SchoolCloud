@@ -49,7 +49,17 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = binding.editTextTextEmailAddress.getText().toString().trim();
                 password = binding.editTextTextPassword.getText().toString().trim();
-                checkInputInfo();
+                //checkInputInfo();
+                if (email.isEmpty()) {
+                    binding.editTextTextEmailAddress.setError("Your email is Required*");
+                    binding.editTextTextEmailAddress.hasFocus();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    binding.editTextTextPassword.setError("The Password is Required*");
+                    binding.editTextTextPassword.hasFocus();
+                    return;
+                }
                 signInToAccountByEmailAndPassword();
             }
         });
