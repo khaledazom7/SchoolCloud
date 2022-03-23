@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.fragment;
+package com.amjad.myapplicationschool.ui.fragment.teacher;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.amjad.myapplicationschool.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ExamFragment#newInstance} factory method to
+ * Use the {@link MarksStudentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExamFragment extends Fragment {
+public class MarksStudentsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ExamFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ExamFragment() {
+    public MarksStudentsFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ExamFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ExamFragment.
+     * @return A new instance of fragment MarksStudentsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExamFragment newInstance(String param1, String param2) {
-        ExamFragment fragment = new ExamFragment();
+    public static MarksStudentsFragment newInstance(String param1, String param2) {
+        MarksStudentsFragment fragment = new MarksStudentsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class ExamFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exam, container, false);
+        return inflater.inflate(R.layout.fragment_marks_students, container, false);
     }
 }

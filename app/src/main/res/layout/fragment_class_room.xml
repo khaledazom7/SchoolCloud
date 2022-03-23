@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_baseline_west_24"
         android:drawableTint="@color/white"
-        android:text="clasiss"
+        android:text="الفصول الدراسية"
         android:textColor="@color/white"
         android:theme="@style/text_purple_200"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView4"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
 
         <TextView
@@ -40,69 +40,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Clasiss for yuo"
+            android:layout_marginEnd="16dp"
+            android:text="الفصول  الدراسية الخاصه بك"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.153"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
-
-        <EditText
-            android:id="@+id/editTextTextEmailAddress"
+        <Button
+            android:id="@+id/buttonFirstClass"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/bg_stage_button"
+            android:background="@drawable/bg_gridet_button"
             android:drawablePadding="8dp"
-            android:gravity="center"
             android:drawableTint="@color/purple_500"
             android:ems="10"
-            android:text="Primary stage"
+            android:gravity="center"
+            android:text="المرحلة الابتدائية"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <EditText
-
-            android:id="@+id/editTextTextPassword"
+        <Button
+            android:id="@+id/buttonMiddleClass"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="20dp"
             android:layout_marginRight="32dp"
-            android:background="@drawable/bg_stage_button"
+            android:background="@drawable/bg_gridet_button"
             android:drawablePadding="8dp"
             android:ems="10"
-            android:hint="Middle School "
+            android:text="المرحلة الاعدادية"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            tools:layout_editor_absoluteY="448dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="70dp"
@@ -110,15 +95,13 @@
             android:layout_marginTop="32dp"
             android:layout_marginRight="32dp"
             android:background="@drawable/bg_gridet_button"
-            android:drawableRight="@drawable/ic_baseline_west_24"
-            android:drawableTint="@color/white"
-            android:text="High school "
+            android:text="المرحلة الثانوية"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextTextPassword"
+            app:layout_constraintTop_toBottomOf="@id/buttonMiddleClass"
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
@@ -129,6 +112,54 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFirstClass" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFirstClass" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button3" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button6" />
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

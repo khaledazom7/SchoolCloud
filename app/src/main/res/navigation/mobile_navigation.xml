@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.amjad.myapplicationschool.ui.fragment.HomeFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_classroom"
-        android:name="com.amjad.myapplicationschool.ui.fragment.ClassRoomFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.ClassRoomFragment"
         android:label="@string/menu_classroom"
         tools:layout="@layout/fragment_class_room" />
 
     <fragment
         android:id="@+id/nav_exam"
-        android:name="com.amjad.myapplicationschool.ui.fragment.ExamFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.ExamFragment"
         android:label="@string/menu_exam"
         tools:layout="@layout/fragment_exam" />
 
@@ -30,32 +30,32 @@
         tools:layout="@layout/fragment_logo_off" />
     <fragment
         android:id="@+id/nav_marks_students"
-        android:name="com.amjad.myapplicationschool.ui.fragment.MarksStudentsFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.MarksStudentsFragment"
         android:label="@string/menu_marks_students"
         tools:layout="@layout/fragment_marks_students" />
     <fragment
         android:id="@+id/nav_mony_file"
-        android:name="com.amjad.myapplicationschool.ui.fragment.MonyFileFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.MonyFileFragment"
         android:label="@string/menu_mony_file"
         tools:layout="@layout/fragment_mony_file" />
     <fragment
         android:id="@+id/nav_presence"
-        android:name="com.amjad.myapplicationschool.ui.fragment.PresenceFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.PresenceFragment"
         android:label="@string/menu_presence"
         tools:layout="@layout/fragment_presence" />
     <fragment
         android:id="@+id/nav_reports"
-        android:name="com.amjad.myapplicationschool.ui.fragment.ReportsFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.ReportsFragment"
         android:label="@string/menu_reports"
         tools:layout="@layout/fragment_reports" />
     <fragment
         android:id="@+id/nav_student_activity"
-        android:name="com.amjad.myapplicationschool.ui.fragment.StudentActivityFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.StudentActivityFragment"
         android:label="@string/menu_student_activity"
         tools:layout="@layout/fragment_student_activity" />
     <fragment
         android:id="@+id/nav_student_record"
-        android:name="com.amjad.myapplicationschool.ui.fragment.StudentRecordFragment"
+        android:name="com.amjad.myapplicationschool.ui.fragment.teacher.StudentRecordFragment"
         android:label="@string/menu_student_record"
         tools:layout="@layout/fragment_student_record" />
 

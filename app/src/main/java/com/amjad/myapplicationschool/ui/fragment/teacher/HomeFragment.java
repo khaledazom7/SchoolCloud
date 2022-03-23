@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.fragment;
+package com.amjad.myapplicationschool.ui.fragment.teacher;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,28 +6,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.adapter.CategoryAdapter;
-import com.amjad.myapplicationschool.databinding.FragmentClassRoomBinding;
 import com.amjad.myapplicationschool.databinding.FragmentHomeBinding;
 import com.amjad.myapplicationschool.model.Category;
 import com.amjad.myapplicationschool.model.Teacher;
 import com.amjad.myapplicationschool.model.User;
 import com.amjad.myapplicationschool.ui.activity.LoginActivity;
-import com.amjad.myapplicationschool.ui.activity.SplashActivity;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
-import com.amjad.myapplicationschool.viewmodel.HomeViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

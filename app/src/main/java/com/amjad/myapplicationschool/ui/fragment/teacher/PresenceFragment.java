@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.fragment;
+package com.amjad.myapplicationschool.ui.fragment.teacher;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.amjad.myapplicationschool.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MonyFileFragment#newInstance} factory method to
+ * Use the {@link PresenceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MonyFileFragment extends Fragment {
+public class PresenceFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class MonyFileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MonyFileFragment() {
+    public PresenceFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class MonyFileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MonyFileFragment.
+     * @return A new instance of fragment PresenceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MonyFileFragment newInstance(String param1, String param2) {
-        MonyFileFragment fragment = new MonyFileFragment();
+    public static PresenceFragment newInstance(String param1, String param2) {
+        PresenceFragment fragment = new PresenceFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class MonyFileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mony_file, container, false);
+        return inflater.inflate(R.layout.fragment_presence, container, false);
     }
 }

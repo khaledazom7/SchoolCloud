@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gridet_button"
-    tools:context=".ui.fragment.StudentActivityFragment">
+    tools:context=".ui.fragment.teacher.StudentActivityFragment">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

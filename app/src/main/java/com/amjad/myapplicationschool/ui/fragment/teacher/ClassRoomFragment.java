@@ -1,4 +1,4 @@
-package com.amjad.myapplicationschool.ui.fragment;
+package com.amjad.myapplicationschool.ui.fragment.teacher;
 
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
