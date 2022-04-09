@@ -30,13 +30,16 @@ public class Teacher {
     private String accountStatement;
     @SerializedName("callInfo")//responsibleStudentCurrentPlace
     private String callInfo;
+    @SerializedName("classRoom")
+    private ArrayList<String> classRoom;
 
     public Teacher() {
 
     }
 
     public Teacher(String teacherID,String major, String degree, String experiences, String skills
-            , String identification, String eduCourses, String medicalRecord, String accountStatement, String callInfo) {
+            , String identification, String eduCourses, String medicalRecord, String accountStatement
+            , String callInfo,ArrayList<String> classRoom) {
         this.teacherID = teacherID;
         this.major = major;
         this.degree = degree;
@@ -47,6 +50,7 @@ public class Teacher {
         this.medicalRecord = medicalRecord;
         this.accountStatement = accountStatement;
         this.callInfo = callInfo;
+        this.classRoom = classRoom;
     }
 
     public String getTeacherID() {
@@ -127,5 +131,13 @@ public class Teacher {
 
     public void setCallInfo(String callInfo) {
         this.callInfo = callInfo;
+    }
+
+    public ArrayList<String> getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(ArrayList<String> classRoom) {
+        this.classRoom = classRoom;
     }
 }
