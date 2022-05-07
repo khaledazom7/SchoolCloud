@@ -32,6 +32,7 @@ public class Student {
     private String majorCurrentClass;
     @SerializedName("returnedClass")
     private ArrayList<String> returnedClass;
+
     // Student personal information
     @SerializedName("dateOfBirth")
     private String dateOfBirth;

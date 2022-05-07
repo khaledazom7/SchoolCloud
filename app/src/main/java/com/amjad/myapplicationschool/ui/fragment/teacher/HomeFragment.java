@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setFragment(Fragment fragment){
-        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment,null) .commit();
     }
 
