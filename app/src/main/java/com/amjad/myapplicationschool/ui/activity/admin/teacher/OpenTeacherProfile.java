@@ -19,6 +19,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class OpenTeacherProfile extends AppCompatActivity {
     private ActivityOpenTeacherProfileBinding binding;
     private FirebaseAuth firebaseAuth;
@@ -44,7 +46,7 @@ public class OpenTeacherProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EditTeacherProfile.class);
-                intent.putExtra("TEACHER_ID",teacherID);
+                intent.putExtra("TEACHER_ID", teacherID);
                 startActivity(intent);
             }
         });
@@ -65,16 +67,18 @@ public class OpenTeacherProfile extends AppCompatActivity {
                 binding.textViewStatus.setText(user.isStatus() + "");
             }
         });
-    }private String documentID = "";
+    }
+
+    private String documentID = "";
 
     private void getTeacherJobInfo(String teacherID) {
         firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", teacherID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.getResult().isEmpty() || task.getResult() == null) {
-                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1","");
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1", "", new ArrayList<>());
                     createTeacherInfoJob(teacher);
-                }else {
+                } else {
                     documentID = task.getResult().getDocuments().get(0).getId();
                     Teacher teacher = task.getResult().getDocuments().get(0).toObject(Teacher.class);
                     binding.textViewMajor.setText(teacher.getMajor());

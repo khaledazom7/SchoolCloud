@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityEditTeacherProfileBinding;
@@ -13,15 +16,21 @@ import com.amjad.myapplicationschool.databinding.ActivityTeacherBinding;
 import com.amjad.myapplicationschool.model.Teacher;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class EditTeacherProfile extends AppCompatActivity {
     private ActivityEditTeacherProfileBinding binding;
     private String teacherID;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    private ArrayList<String> ClassRoomClass;
+    private ArrayAdapter<CharSequence> adapterSpinnerClassRoomCurrentClass;
+    private String documentID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +44,63 @@ public class EditTeacherProfile extends AppCompatActivity {
             teacherID = intent.getStringExtra("TEACHER_ID");
             getTeacherJobInfo(teacherID);
             updateTeacherJobInfo();
+            spinnerClassRoom();
         }
     }
-    private String documentID = "";
+
+    private void spinnerClassRoom() {
+        adapterSpinnerClassRoomCurrentClass = ArrayAdapter.createFromResource(this, R.array.spinnerCurrentClass, R.layout.spinner_item);
+        adapterSpinnerClassRoomCurrentClass.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        binding.spinnerClassRoom.setAdapter(adapterSpinnerClassRoomCurrentClass);
+        //binding.spinnerCurrentClass.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+        binding.spinnerClassRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!ClassRoomClass.contains(parent.getItemAtPosition(position).toString())) {
+                    ClassRoomClass.add(parent.getItemAtPosition(position).toString());
+                    setTag();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setTag() {
+        binding.chipClasssRoom.removeAllViews();
+        for (int index = 0; index < ClassRoomClass.size(); index++) {
+            final String tagName = ClassRoomClass.get(index);
+            final Chip chip = new Chip(this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);
+            chip.setText(tagName);
+            chip.setCloseIconResource(R.drawable.ic_baseline_close_24);
+            chip.setCloseIconEnabled(true);
+            //Added click listener on close icon to remove tag from ChipGroup
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClassRoomClass.remove(tagName);
+                    binding.chipClasssRoom.removeView(chip);
+                }
+            });
+
+            binding.chipClasssRoom.addView(chip);
+        }
+    }
+
     private void getTeacherJobInfo(String teacherID) {
         firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", teacherID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.getResult().isEmpty() || task.getResult() == null) {
-                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1","");
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1","",new ArrayList<>());
                     createTeacherInfoJob(teacher);
                 }else {
                     documentID = task.getResult().getDocuments().get(0).getId();

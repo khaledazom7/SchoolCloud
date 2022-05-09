@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
                 break;
             case "teacher":
-                teacher = new Teacher(userID, "", "", "", "", "", "", "", "1", "");
+                teacher = new Teacher(userID, "", "", "", "", "", "", "", "1", "",new ArrayList<>());
                 firebaseFirestore.collection("Teacher").whereEqualTo("teacherID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

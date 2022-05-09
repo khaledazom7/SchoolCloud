@@ -16,6 +16,7 @@ import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.Personal
 import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.ResponsibleStudentFragment;
 import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.StudentSecondaryOInfoFragment;
 import com.amjad.myapplicationschool.ui.activity.admin.teacher.OpenTeacherProfile;
+import com.amjad.myapplicationschool.ui.fragment.admin.SettingsFragment;
 import com.amjad.myapplicationschool.ui.fragment.admin.StudentFragment;
 import com.amjad.myapplicationschool.ui.fragment.admin.TeacherFragment;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
@@ -41,8 +42,8 @@ public class AdminActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FragmentPageAdapter fragmentPageAdapter;
     private RecyclerView recyclerView;
-    private String[] titles = new String[]{"Teacher", "Student"};
-    private Fragment[] fragments = new Fragment[]{new TeacherFragment(), new StudentFragment()};
+    private String[] titles = new String[]{"Teacher", "Student", "Settings"};
+    private Fragment[] fragments = new Fragment[]{new TeacherFragment(), new StudentFragment(), new SettingsFragment()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class AdminActivity extends AppCompatActivity {
         preparFragmentPager();
     }
 
-    private void preparFragmentPager(){
+    private void preparFragmentPager() {
         fragmentPageAdapter = new FragmentPageAdapter(AdminActivity.this, titles, fragments);
         binding.viewPagerId.setAdapter(fragmentPageAdapter);
         new TabLayoutMediator(binding.tabLayout, binding.viewPagerId, ((tab, position) -> tab.setText(titles[position]))).attach();
