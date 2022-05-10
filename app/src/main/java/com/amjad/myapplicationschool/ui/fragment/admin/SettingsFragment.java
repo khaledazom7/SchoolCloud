@@ -10,10 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.FragmentSettingsBinding;
-import com.amjad.myapplicationschool.databinding.FragmentStudentBinding;
-import com.amjad.myapplicationschool.ui.activity.admin.settings.SettingsActivity;
+import com.amjad.myapplicationschool.ui.activity.admin.settings.ClassSettingsActivity;
 
 public class SettingsFragment extends Fragment {
 
@@ -38,7 +36,7 @@ public class SettingsFragment extends Fragment {
         binding.buttonClassSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), SettingsActivity.class));
+                startActivity(new Intent(getContext(), ClassSettingsActivity.class));
             }
         });
     }

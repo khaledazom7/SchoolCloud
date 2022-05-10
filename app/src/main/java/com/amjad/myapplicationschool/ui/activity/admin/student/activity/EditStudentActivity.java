@@ -38,7 +38,7 @@ public class EditStudentActivity extends AppCompatActivity {
     private ActivityEditStudentBinding binding;
     private FragmentPageAdapter fragmentPageAdapter;
     private String studentID;
-    private String[] titles = new String[]{"Student Information", "Responsible Student", "Current Class", "First School", "More Information"};
+    private String[] titles = new String[]{"Student Information", "Responsible Student", "Current ClassModel", "First School", "More Information"};
     private Fragment[] fragments = new Fragment[]{new PersonalInformationFragment(), new ResponsibleStudentFragment(), new CurrentClassFragment(), new FirstSchoolFragment()
             , new StudentSecondaryOInfoFragment()};
     private FirebaseFirestore firebaseFirestore;

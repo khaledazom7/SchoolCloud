@@ -4,36 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.amjad.myapplicationschool.adapter.FragmentPageAdapter;
-import com.amjad.myapplicationschool.adapter.UsersAdapter;
 import com.amjad.myapplicationschool.databinding.ActivityAdminBinding;
-import com.amjad.myapplicationschool.model.User;
 import com.amjad.myapplicationschool.ui.activity.LoginActivity;
 import com.amjad.myapplicationschool.ui.activity.RegisterActivity;
-import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
-import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.CurrentClassFragment;
-import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.FirstSchoolFragment;
-import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.PersonalInformationFragment;
-import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.ResponsibleStudentFragment;
-import com.amjad.myapplicationschool.ui.activity.admin.student.fragment.StudentSecondaryOInfoFragment;
-import com.amjad.myapplicationschool.ui.activity.admin.teacher.OpenTeacherProfile;
 import com.amjad.myapplicationschool.ui.fragment.admin.SettingsFragment;
 import com.amjad.myapplicationschool.ui.fragment.admin.StudentFragment;
 import com.amjad.myapplicationschool.ui.fragment.admin.TeacherFragment;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 public class AdminActivity extends AppCompatActivity {
 
