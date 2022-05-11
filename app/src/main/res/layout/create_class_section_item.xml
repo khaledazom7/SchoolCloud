@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_class_number"
+    android:id="@+id/create_class_section"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -54,6 +54,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center|end"
             android:layout_marginEnd="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_create_opening_game_id"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,14 +76,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <LinearLayout
@@ -91,21 +87,21 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextNumberArabic"
+                android:id="@+id/editTextTextSectionArabic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Number Arabic"
+                android:hint="Section Arabic"
                 android:inputType="textPersonName"
                 tools:ignore="TextFields" />
 
             <EditText
-                android:id="@+id/editTextTextNumberEnglish"
+                android:id="@+id/editTextTextSectionEnglish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Number English"
+                android:hint="Section English"
                 android:inputType="textPersonName"
                 tools:ignore="TextFields" />
         </LinearLayout>

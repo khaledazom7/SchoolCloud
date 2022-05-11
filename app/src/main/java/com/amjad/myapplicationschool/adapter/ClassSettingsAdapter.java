@@ -25,6 +25,11 @@ import java.util.ArrayList;
 public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, ClassSettingsAdapter.ViewHolder> {
 
     private ClassSettingsAdapter.OnItemClickListener listener;
+    private int type = 0;
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public ClassSettingsAdapter(@NonNull FirestoreRecyclerOptions<ClassModel> options) {
         super(options);
@@ -33,23 +38,49 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull ClassSettingsAdapter.ViewHolder holder, int position, @NonNull ClassModel model) {
-        holder.number.setText(model.getNumber());
-        holder.number.setText(model.getNumberEn());
-        holder.number.setText(model.getSection());
-        holder.number.setText(model.getSectionEn());
+        switch (type){
+            case 0://Number
+                fillText(model.getNumber(), holder.number);
+                fillText(model.getNumberEn(), holder.number_en);
+                holder.section.setVisibility(View.GONE);
+                holder.section_en.setVisibility(View.GONE);
+                break;
+            case 1://Section
+                fillText(model.getSection(),holder.section );
+                fillText(model.getSectionEn(),holder.section_en );
+                holder.number.setVisibility(View.GONE);
+                holder.number_en.setVisibility(View.GONE);
+                break;
+            case 2://Class Name
+
+                break;
+        }
+        /*fillText(model.getNumber(), holder.number);
+        fillText(model.getNumberEn(), holder.number_en);
+        fillText(model.getSection(), holder.section);
+        fillText(model.getSectionEn(), holder.section_en);*/
     }
+
+    private void fillText(String value, TextView textView) {
+        if (value.isEmpty())
+            textView.setVisibility(View.GONE);
+        else
+            textView.setText(value);
+    }
+
 
     @NonNull
     @Override
     public ClassSettingsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.user_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.class_item, parent, false);
         return new ClassSettingsAdapter.ViewHolder(view);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView  number, number_en, section, section_en;
+        TextView number, number_en, section, section_en;
         ConstraintLayout classModelItem;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             number = itemView.findViewById(R.id.textViewNumber);
@@ -60,7 +91,6 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
             classModelItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (getAdapterPosition() != RecyclerView.NO_POSITION && listener != null) {
                         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(getAdapterPosition());
                         listener.onItemClick(documentSnapshot, getAdapterPosition());
