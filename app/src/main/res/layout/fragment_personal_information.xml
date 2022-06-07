@@ -122,7 +122,7 @@
                         android:id="@+id/textView11"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="50dp"
                         android:layout_marginEnd="8dp"
                         android:text="Birth Certificate"
                         app:layout_constraintBottom_toBottomOf="parent"

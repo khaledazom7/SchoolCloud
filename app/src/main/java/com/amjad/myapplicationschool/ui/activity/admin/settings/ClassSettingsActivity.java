@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.adapter.ClassSettingsAdapter;
@@ -250,8 +253,8 @@ public class ClassSettingsActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 Button create = (Button) view.findViewById(R.id.button_create_opening_game_id);
                 ImageView back = (ImageView) view.findViewById(R.id.image_back_id);
-                Spinner spinnerNumber = view.findViewById(R.id.spinnerNumber);
-                Spinner spinnerSection = view.findViewById(R.id.spinnerSection);
+                Spinner spinnerNumber = (Spinner) view.findViewById(R.id.spinnerNumber);
+                Spinner spinnerSection = (Spinner) view.findViewById(R.id.spinnerSection);
                 TextView textViewCLassName = view.findViewById(R.id.textViewCLassName);
                 ArrayList<String> classModelsNumber = new ArrayList<>();
                 ArrayList<String> classModelsSection = new ArrayList<>();
@@ -273,16 +276,43 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                            classModelsSection.add(task.getResult().getDocuments().get(i).toObject(ClassModel.class).getNumber());
+                        }
+                    }
+                });
+                FirebaseFirestore.getInstance()
+                        .collection("ClassRoom")
+                        .whereEqualTo("type", 1)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                             classModelsSection.add(task.getResult().getDocuments().get(i).toObject(ClassModel.class).getSection());
                         }
                     }
                 });
-                spinner(classModelsNumber,spinnerNumber);
+                spinnerNumber(classModelsNumber, spinnerNumber);
+                // spinnerSection(classModelsSection, spinnerSection);
+                adapterSpinnerSection = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, classModelsSection);
+                //adapterSpinnerCurrentClass.setDropDownViewResource(R.layout.spinner_item_dropdown);
+                spinnerSection.setAdapter(adapterSpinnerSection);
+                //binding.spinnerCurrentClass.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+                spinnerSection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        spinnerSectionValue = parent.getItemAtPosition(position).toString();
+                        Toast.makeText(getApplicationContext(), spinnerNumberValue, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
                 create.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String spinnerNumberValue = "";
-                        String spinnerSectionValue = "";
+
                         progressBar.setVisibility(View.VISIBLE);
                         ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2);
                         storClassName(classModel);
@@ -309,17 +339,41 @@ public class ClassSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayAdapter<String> adapterSpinnerCurrentClass;
-    String currentClass;
-    private void spinner(ArrayList<String> arrayList, Spinner spinner) {
-        adapterSpinnerCurrentClass = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item,arrayList);
+    private ArrayAdapter<String> adapterSpinnerNumber;
+    private ArrayAdapter<String> adapterSpinnerSection;
+    String spinnerNumberValue = "";
+    String spinnerSectionValue = "";
+
+    private void spinnerNumber(ArrayList<String> arrayList, Spinner spinner) {
+        adapterSpinnerNumber = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayList);
         //adapterSpinnerCurrentClass.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spinner.setAdapter(adapterSpinnerCurrentClass);
+        spinner.setAdapter(adapterSpinnerNumber);
         //binding.spinnerCurrentClass.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currentClass = parent.getItemAtPosition(position).toString();
+                spinnerNumberValue = parent.getItemAtPosition(position).toString();
+                Log.d("spinnerNumberValue", spinnerNumberValue);
+                Toast.makeText(getApplicationContext(), spinnerNumberValue, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void spinnerSection(ArrayList<String> arrayList, Spinner spinner) {
+        adapterSpinnerSection = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item, arrayList);
+        //adapterSpinnerCurrentClass.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        spinner.setAdapter(adapterSpinnerSection);
+        //binding.spinnerCurrentClass.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getContext());
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinnerSectionValue = parent.getItemAtPosition(position).toString();
+                Toast.makeText(getApplicationContext(), spinnerNumberValue, Toast.LENGTH_SHORT).show();
             }
 
             @Override
