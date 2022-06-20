@@ -2,11 +2,13 @@ package com.amjad.myapplicationschool.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,7 +19,11 @@ import com.amjad.myapplicationschool.model.ClassModel;
 import com.amjad.myapplicationschool.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,7 +58,28 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                 holder.number_en.setVisibility(View.GONE);
                 break;
             case 2://Class Name
-
+                FirebaseFirestore.getInstance()
+                        .collection("ClassRoom")
+                        .document(model.getNumberId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        //fillText(task.getResult().toObject(ClassModel.class).getNumber(), holder.number);
+                       //fillText(task.getResult().toObject(ClassModel.class).getNumberEn(), holder.number_en);
+                        holder.number.setText(task.getResult().toObject(ClassModel.class).getNumber());
+                        holder.number_en.setText(task.getResult().toObject(ClassModel.class).getNumberEn());
+                    }
+                });
+                FirebaseFirestore.getInstance()
+                        .collection("ClassRoom")
+                        .document(model.getSectionId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                       // fillText(task.getResult().toObject(ClassModel.class).getSection(), holder.section);
+                        //fillText(task.getResult().toObject(ClassModel.class).getSectionEn(), holder.section_en);
+                        holder.section.setText(task.getResult().toObject(ClassModel.class).getSection());
+                        holder.section_en.setText(task.getResult().toObject(ClassModel.class).getSectionEn());
+                    }
+                });
                 break;
         }
         /*fillText(model.getNumber(), holder.number);
