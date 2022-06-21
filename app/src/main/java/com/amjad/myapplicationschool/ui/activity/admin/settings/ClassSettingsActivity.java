@@ -61,6 +61,11 @@ public class ClassSettingsActivity extends AppCompatActivity {
         createClassSection();
         getAllClassName();
         createClassName();
+        deleteCLass();
+    }
+
+    private void deleteCLass() {
+
     }
 
     private void getAllClassNumber() {
@@ -115,7 +120,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             return;
                         }
-                        ClassModel classModel = new ClassModel(numberArabicValue, numberEnglishValue, "", "", "", "", 0);
+                        ClassModel classModel = new ClassModel(numberArabicValue, numberEnglishValue, "", "", "", "", 0, 0);
                         storClassNumber(classModel);
                     }
                 });
@@ -193,7 +198,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             return;
                         }
-                        ClassModel classModel = new ClassModel("", "", sectionArabicValue, sectionEnglishValue, "", "", 1);
+                        ClassModel classModel = new ClassModel("", "", sectionArabicValue, sectionEnglishValue, "", "", 1, 0);
                         storClassSection(classModel);
                     }
                 });
@@ -233,11 +238,12 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Toast.makeText(getApplicationContext(), "sssssss", Toast.LENGTH_LONG).show();
-                String CLassId = documentSnapshot.getId();
-                Intent intent = new Intent(getApplicationContext(), ClassSettingsActivity.class);
+                Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_SHORT).show();
+                String id = documentSnapshot.getId();
+                FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
+                /*Intent intent = new Intent(getApplicationContext(), ClassSettingsActivity.class);
                 intent.putExtra("CLass_ID", CLassId);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         binding.recyclerViewClassName.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -260,8 +266,25 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         binding.classNameInclude.progressBarId.setVisibility(View.VISIBLE);
-                        ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2);
-                        storClassName(classModel);
+                        FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("type", 2).orderBy("order").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                int order = 0;
+                                ClassModel classModelOld;
+                                if (task.isSuccessful()) {
+                                    classModelOld = task.getResult().getDocuments().get(0).toObject(ClassModel.class);
+                                    order = classModelOld.getOrder();
+                                } else
+                                    order = 0;
+                                Toast.makeText(getApplicationContext(), task.getResult().getDocuments().size() + "s", Toast.LENGTH_SHORT).show();
+                                /*if (task.getResult().getDocuments().size() != 0){
+                                    ClassModel classModelOld = task.getResult().getDocuments().get(0).toObject(ClassModel.class);
+                                    order = classModelOld.getOrder();
+                                }*/
+                                ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2, order);
+                                storClassName(classModel);
+                            }
+                        });
                     }
                 });
                 binding.classNameInclude.imageBackId.setOnClickListener(new View.OnClickListener() {
@@ -295,6 +318,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance()
                 .collection("ClassRoom")
                 .whereEqualTo("type", 0)
+
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -313,7 +337,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classModelsNumber);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setSelection(0,true);
+        spinner.setSelection(0, true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -349,7 +373,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classModelsSection);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setSelection(0,true);
+        spinner.setSelection(0, true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -20,12 +20,13 @@ public class ClassModel {
     private String sectionId;
     @SerializedName("type")
     private int type;//0:Number , 1:Section, 2: Name (Number + Section)
-
+    @SerializedName("order")
+    private int order;
 
     public ClassModel() {
     }
 
-    public ClassModel(String number, String numberEn, String section, String sectionEn, String numberId, String sectionId, int type) {
+    public ClassModel(String number, String numberEn, String section, String sectionEn, String numberId, String sectionId, int type, int order) {
         this.number = number;
         this.numberEn = numberEn;
         this.section = section;
@@ -33,6 +34,7 @@ public class ClassModel {
         this.numberId = numberId;
         this.sectionId = sectionId;
         this.type = type;
+        this.order = order;
     }
 
     public String getNumber() {
@@ -89,5 +91,13 @@ public class ClassModel {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

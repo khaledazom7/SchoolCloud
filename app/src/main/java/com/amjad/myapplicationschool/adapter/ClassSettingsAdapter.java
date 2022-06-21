@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -107,6 +108,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView number, number_en, section, section_en;
         ConstraintLayout classModelItem;
+        ImageButton buttonDelete, buttonEdit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,19 +117,35 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
             section = itemView.findViewById(R.id.textViewSection);
             section_en = itemView.findViewById(R.id.textViewSectionEn);
             classModelItem = itemView.findViewById(R.id.classModelItem);
+            buttonDelete = itemView.findViewById(R.id.buttonDeleteClass);
+            buttonEdit = itemView.findViewById(R.id.buttonEditClass);
             classModelItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION && listener != null) {
-                        DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(getAdapterPosition());
-                        listener.onItemClick(documentSnapshot, getAdapterPosition());
-                    }
+                   onClickItem(getAdapterPosition());
                 }
             });
-
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickItem(getAdapterPosition());
+                }
+            });
+            buttonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickItem(getAdapterPosition());
+                }
+            });
         }
     }
 
+    public void onClickItem(int position) {
+        if (position != RecyclerView.NO_POSITION && listener != null) {
+            DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
+            listener.onItemClick(documentSnapshot, position);
+        }
+    }
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
