@@ -45,16 +45,37 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
     @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull ClassSettingsAdapter.ViewHolder holder, int position, @NonNull ClassModel model) {
-        switch (type){
+        switch (type) {
             case 0://Number
+                //check_number_used(getSnapshots().getSnapshot(position).getId());
+                FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("numberId", getSnapshots().getSnapshot(position).getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful())
+                            if (task.getResult().getDocuments().size() > 0)
+                                holder.buttonDelete.setVisibility(View.GONE);
+                            else
+                                holder.buttonDelete.setVisibility(View.VISIBLE);
+                    }
+                });
                 fillText(model.getNumber(), holder.number);
                 fillText(model.getNumberEn(), holder.number_en);
                 holder.section.setVisibility(View.GONE);
                 holder.section_en.setVisibility(View.GONE);
                 break;
             case 1://Section
-                fillText(model.getSection(),holder.section );
-                fillText(model.getSectionEn(),holder.section_en );
+                FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("sectionId", getSnapshots().getSnapshot(position).getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful())
+                            if (task.getResult().getDocuments().size() > 0)
+                                holder.buttonDelete.setVisibility(View.GONE);
+                            else
+                                holder.buttonDelete.setVisibility(View.VISIBLE);
+                    }
+                });
+                fillText(model.getSection(), holder.section);
+                fillText(model.getSectionEn(), holder.section_en);
                 holder.number.setVisibility(View.GONE);
                 holder.number_en.setVisibility(View.GONE);
                 break;
@@ -65,7 +86,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         //fillText(task.getResult().toObject(ClassModel.class).getNumber(), holder.number);
-                       //fillText(task.getResult().toObject(ClassModel.class).getNumberEn(), holder.number_en);
+                        //fillText(task.getResult().toObject(ClassModel.class).getNumberEn(), holder.number_en);
                         holder.number.setText(task.getResult().toObject(ClassModel.class).getNumber());
                         holder.number_en.setText(task.getResult().toObject(ClassModel.class).getNumberEn());
                     }
@@ -75,7 +96,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                         .document(model.getSectionId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                       // fillText(task.getResult().toObject(ClassModel.class).getSection(), holder.section);
+                        // fillText(task.getResult().toObject(ClassModel.class).getSection(), holder.section);
                         //fillText(task.getResult().toObject(ClassModel.class).getSectionEn(), holder.section_en);
                         holder.section.setText(task.getResult().toObject(ClassModel.class).getSection());
                         holder.section_en.setText(task.getResult().toObject(ClassModel.class).getSectionEn());
@@ -83,10 +104,6 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                 });
                 break;
         }
-        /*fillText(model.getNumber(), holder.number);
-        fillText(model.getNumberEn(), holder.number_en);
-        fillText(model.getSection(), holder.section);
-        fillText(model.getSectionEn(), holder.section_en);*/
     }
 
     private void fillText(String value, TextView textView) {
@@ -122,32 +139,33 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
             classModelItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   onClickItem(getAdapterPosition());
+                    onClickItem(getAdapterPosition(), 1);
                 }
             });
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickItem(getAdapterPosition());
+                    onClickItem(getAdapterPosition(), 0);
                 }
             });
             buttonEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickItem(getAdapterPosition());
+                    onClickItem(getAdapterPosition(), 1);
                 }
             });
         }
     }
 
-    public void onClickItem(int position) {
+    public void onClickItem(int position, int type) {
         if (position != RecyclerView.NO_POSITION && listener != null) {
             DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
-            listener.onItemClick(documentSnapshot, position);
+            listener.onItemClick(documentSnapshot, position, type);
         }
     }
+
     public interface OnItemClickListener {
-        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+        void onItemClick(DocumentSnapshot documentSnapshot, int position, int type);
     }
 
     public void onItemSetOnClickListener(ClassSettingsAdapter.OnItemClickListener listener) {

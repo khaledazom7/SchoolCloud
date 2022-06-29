@@ -81,11 +81,22 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.setType(0);
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String CLassId = documentSnapshot.getId();
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position, int type) {
+                switch (type){
+                    case 0:
+                        String id = documentSnapshot.getId();
+                        FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
+                        getAllClassNumber();
+                        getAllClassName();
+                        break;
+                    case 1:
+
+                        break;
+                }
+                /*String CLassId = documentSnapshot.getId();
                 Intent intent = new Intent(getApplicationContext(), ClassSettingsActivity.class);
                 intent.putExtra("CLass_ID", CLassId);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         binding.recyclerViewClassNumber.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -159,11 +170,18 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.setType(1);
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String CLassId = documentSnapshot.getId();
-                Intent intent = new Intent(getApplicationContext(), ClassSettingsActivity.class);
-                intent.putExtra("CLass_ID", CLassId);
-                startActivity(intent);
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position,int type) {
+                switch (type){
+                    case 0:
+                        String id = documentSnapshot.getId();
+                        FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
+                        getAllClassSection();
+                        getAllClassName();
+                        break;
+                    case 1:
+
+                        break;
+                }
             }
         });
         binding.recyclerViewClassSection.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -225,7 +243,10 @@ public class ClassSettingsActivity extends AppCompatActivity {
 
     //Class Name
     private void getAllClassName() {
-        Query query = FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("type", 2);
+        Query query = FirebaseFirestore.getInstance()
+                .collection("ClassRoom")
+                .whereEqualTo("type", 2)
+                .orderBy("order", com.google.firebase.firestore.Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ClassModel> options = new FirestoreRecyclerOptions.Builder<ClassModel>()
                 .setQuery(query, ClassModel.class)
                 .build();
@@ -237,13 +258,19 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.setType(2);
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_SHORT).show();
-                String id = documentSnapshot.getId();
-                FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
-                /*Intent intent = new Intent(getApplicationContext(), ClassSettingsActivity.class);
-                intent.putExtra("CLass_ID", CLassId);
-                startActivity(intent);*/
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position,int type) {
+                switch (type){
+                    case 0:
+                        String id = documentSnapshot.getId();
+                        FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
+                        getAllClassNumber();
+                        getAllClassSection();
+                        getAllClassName();
+                        break;
+                    case 1:
+
+                        break;
+                }
             }
         });
         binding.recyclerViewClassName.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -266,22 +293,22 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         binding.classNameInclude.progressBarId.setVisibility(View.VISIBLE);
-                        FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("type", 2).orderBy("order").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("type", 2).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 int order = 0;
                                 ClassModel classModelOld;
                                 if (task.isSuccessful()) {
-                                    classModelOld = task.getResult().getDocuments().get(0).toObject(ClassModel.class);
-                                    order = classModelOld.getOrder();
-                                } else
-                                    order = 0;
+                                    if (task.getResult().getDocuments().size() > 0) {
+                                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                            classModelOld = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
+                                            if (classModelOld.getOrder() > order)
+                                                order = classModelOld.getOrder();
+                                        }
+                                    }
+                                }
                                 Toast.makeText(getApplicationContext(), task.getResult().getDocuments().size() + "s", Toast.LENGTH_SHORT).show();
-                                /*if (task.getResult().getDocuments().size() != 0){
-                                    ClassModel classModelOld = task.getResult().getDocuments().get(0).toObject(ClassModel.class);
-                                    order = classModelOld.getOrder();
-                                }*/
-                                ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2, order);
+                                ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2, ++order);
                                 storClassName(classModel);
                             }
                         });
@@ -304,6 +331,9 @@ public class ClassSettingsActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 binding.classNameInclude.progressBarId.setVisibility(View.GONE);
                 binding.createClassLayout.setVisibility(View.GONE);
+                getAllClassNumber();
+                getAllClassSection();
+                getAllClassName();
             }
         });
     }
@@ -318,7 +348,6 @@ public class ClassSettingsActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance()
                 .collection("ClassRoom")
                 .whereEqualTo("type", 0)
-
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -328,14 +357,13 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     classModel.setNumberId(task.getResult().getDocuments().get(i).getId());
                     arraySpinnerNumber.add(classModel);
                     classModelsNumber[i] = task.getResult().getDocuments().get(i).toObject(ClassModel.class).getNumber();
-                    Log.d("asdsad", classModelsNumber[i] + "");
                 }
 
             }
         });
         Spinner spinner = findViewById(R.id.spinnerNumber);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classModelsNumber);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, classModelsNumber);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // The drop down view
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(0, true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
