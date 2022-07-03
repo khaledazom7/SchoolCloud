@@ -1,6 +1,7 @@
 package com.amjad.myapplicationschool.ui.activity.admin.settings;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +31,10 @@ import com.amjad.myapplicationschool.databinding.ActivityClassSettingsBinding;
 import com.amjad.myapplicationschool.model.ClassModel;
 import com.amjad.myapplicationschool.model.Student;
 import com.amjad.myapplicationschool.model.User;
+import com.amjad.myapplicationschool.ui.activity.LoginActivity;
+import com.amjad.myapplicationschool.ui.activity.admin.AdminActivity;
+import com.amjad.myapplicationschool.ui.activity.student.StudentActivity;
+import com.amjad.myapplicationschool.ui.activity.teacher.TeacherActivity;
 import com.amjad.myapplicationschool.utils.PreferenceUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -61,11 +67,175 @@ public class ClassSettingsActivity extends AppCompatActivity {
         createClassSection();
         getAllClassName();
         createClassName();
-        deleteCLass();
+        createClassLayoutClick();
     }
 
-    private void deleteCLass() {
+    private void createClassLayoutClick() {
+        binding.createClassLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.createClassLayout.setVisibility(View.GONE);
+            }
+        });
+    }
 
+    private void updateClassName(String id, ClassModel classModel) {
+        binding.createClassLayout.setVisibility(View.VISIBLE);
+        binding.classNameInclude.progressBarId.setVisibility(View.GONE);
+        spinnerNumber();
+        spinnerSection();
+        binding.classNameInclude.buttonCreateOpeningGameId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.classNameInclude.progressBarId.setVisibility(View.VISIBLE);
+                //TODO Update
+            }
+        });
+        binding.classNameInclude.imageBackId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.classNameInclude.progressBarId.setVisibility(View.GONE);
+                binding.createClassLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void updateClassNamedialog(String id, ClassModel classModel) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.update_class_name_item, null);
+        dialogBuilder.setView(view);
+        progressBar = view.findViewById(R.id.progressBar_id);
+        progressBar.setVisibility(View.GONE);
+        Button update = (Button) view.findViewById(R.id.button_create_opening_game_id);
+        ImageView back = (ImageView) view.findViewById(R.id.image_back_id);
+        String userId = PreferenceUtils.getId(getApplicationContext());
+        spinnerNumber();
+        spinnerSection();
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:: UPDATE CLASS NAME
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialogBuilder.dismiss();
+            }
+        });
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void updateClassNameBootom(String id, ClassModel classModel) {
+        bottomSheetDialog = new BottomSheetDialog(ClassSettingsActivity.this);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_class_name_item, null);
+        progressBar = view.findViewById(R.id.progressBar_id);
+        progressBar.setVisibility(View.GONE);
+        Button update = (Button) view.findViewById(R.id.button_create_opening_game_id);
+        ImageView back = (ImageView) view.findViewById(R.id.image_back_id);
+        String userId = PreferenceUtils.getId(getApplicationContext());
+        spinnerNumber();
+        spinnerSection();
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("type", 2).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        int order = 0;
+                        ClassModel classModelOld;
+                        if (task.isSuccessful()) {
+                            if (task.getResult().getDocuments().size() > 0) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    classModelOld = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
+                                    if (classModelOld.getOrder() > order)
+                                        order = classModelOld.getOrder();
+                                }
+                            }
+                        }
+                        Toast.makeText(getApplicationContext(), task.getResult().getDocuments().size() + "s", Toast.LENGTH_SHORT).show();
+                        ClassModel classModel = new ClassModel("", "", "", "", spinnerNumberValue, spinnerSectionValue, 2, ++order);
+                        storClassName(classModel);
+                    }
+                });
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+    }
+
+    private void updateData(String id, ClassModel classModel) {
+        bottomSheetDialog = new BottomSheetDialog(ClassSettingsActivity.this);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_class_item, null);
+        progressBar = view.findViewById(R.id.progressBar_id);
+        progressBar.setVisibility(View.GONE);
+        Button update = (Button) view.findViewById(R.id.button_create_opening_game_id);
+        ImageView back = (ImageView) view.findViewById(R.id.image_back_id);
+        EditText nameArabic = view.findViewById(R.id.editTextTextArabic);
+        EditText nameEnglish = view.findViewById(R.id.editTextTextEnglish);
+        switch (classModel.getType()) {
+            case 0:
+                nameArabic.setText(classModel.getNumber());
+                nameEnglish.setText(classModel.getNumberEn());
+                break;
+            case 1:
+                nameArabic.setText(classModel.getSection());
+                nameEnglish.setText(classModel.getSectionEn());
+                break;
+        }
+        String userId = PreferenceUtils.getId(getApplicationContext());
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nameArabicValue = nameArabic.getText().toString();
+                String nameEnglishValue = nameEnglish.getText().toString();
+                progressBar.setVisibility(View.VISIBLE);
+                if (nameArabicValue.isEmpty() && nameEnglishValue.isEmpty()) {
+                    nameArabic.setError("The name is required!");
+                    nameArabic.requestFocus();
+                    nameEnglish.setError("The name is required!");
+                    nameEnglish.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+                switch (classModel.getType()) {
+                    case 0:
+                        FirebaseFirestore.getInstance()
+                                .collection("ClassRoom")
+                                .document(id)
+                                .update("number", nameArabicValue, "numberEn", nameEnglishValue);
+                        break;
+                    case 1:
+                        FirebaseFirestore.getInstance()
+                                .collection("ClassRoom")
+                                .document(id)
+                                .update("section", nameArabicValue, "sectionEn", nameEnglishValue);
+                        break;
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        bottomSheetDialog.dismiss();
+                    }
+                }, 1000);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
     }
 
     private void getAllClassNumber() {
@@ -82,15 +252,16 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position, int type) {
-                switch (type){
+                String id = documentSnapshot.getId();
+                ClassModel classModel = documentSnapshot.toObject(ClassModel.class);
+                switch (type) {
                     case 0:
-                        String id = documentSnapshot.getId();
                         FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
                         getAllClassNumber();
                         getAllClassName();
                         break;
                     case 1:
-
+                        updateData(id, classModel);
                         break;
                 }
                 /*String CLassId = documentSnapshot.getId();
@@ -99,7 +270,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
                 startActivity(intent);*/
             }
         });
-        binding.recyclerViewClassNumber.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.recyclerViewClassNumber.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.recyclerViewClassNumber.setAdapter(classAdapter);
         classAdapter.startListening();
     }
@@ -170,21 +341,22 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.setType(1);
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position,int type) {
-                switch (type){
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position, int type) {
+                String id = documentSnapshot.getId();
+                ClassModel classModel = documentSnapshot.toObject(ClassModel.class);
+                switch (type) {
                     case 0:
-                        String id = documentSnapshot.getId();
                         FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
                         getAllClassSection();
                         getAllClassName();
                         break;
                     case 1:
-
+                        updateData(id, classModel);
                         break;
                 }
             }
         });
-        binding.recyclerViewClassSection.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.recyclerViewClassSection.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.recyclerViewClassSection.setAdapter(classAdapter);
         classAdapter.startListening();
     }
@@ -258,17 +430,18 @@ public class ClassSettingsActivity extends AppCompatActivity {
         classAdapter.setType(2);
         classAdapter.onItemSetOnClickListener(new ClassSettingsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position,int type) {
-                switch (type){
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position, int type) {
+                String id = documentSnapshot.getId();
+                ClassModel classModel = documentSnapshot.toObject(ClassModel.class);
+                switch (type) {
                     case 0:
-                        String id = documentSnapshot.getId();
                         FirebaseFirestore.getInstance().collection("ClassRoom").document(id).delete();
                         getAllClassNumber();
                         getAllClassSection();
                         getAllClassName();
                         break;
                     case 1:
-
+                        updateClassName(id, classModel);
                         break;
                 }
             }
@@ -356,6 +529,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     ClassModel classModel = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
                     classModel.setNumberId(task.getResult().getDocuments().get(i).getId());
                     arraySpinnerNumber.add(classModel);
+                    Log.d("asasass",classModel.getNumber());
                     classModelsNumber[i] = task.getResult().getDocuments().get(i).toObject(ClassModel.class).getNumber();
                 }
 

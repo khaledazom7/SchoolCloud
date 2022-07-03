@@ -80,6 +80,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                 holder.number_en.setVisibility(View.GONE);
                 break;
             case 2://Class Name
+                //TODO:: hid button delete from class name item (not allow to remove class name)
                 FirebaseFirestore.getInstance()
                         .collection("ClassRoom")
                         .document(model.getNumberId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -102,6 +103,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                         holder.section_en.setText(task.getResult().toObject(ClassModel.class).getSectionEn());
                     }
                 });
+                holder.buttonDelete.setVisibility(View.GONE);
                 break;
         }
     }
