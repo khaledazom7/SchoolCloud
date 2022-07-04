@@ -5,20 +5,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.amjad.myapplicationschool.R;
 import com.amjad.myapplicationschool.databinding.ActivityEditTeacherProfileBinding;
 import com.amjad.myapplicationschool.databinding.ActivityTeacherBinding;
+import com.amjad.myapplicationschool.model.ClassModel;
 import com.amjad.myapplicationschool.model.Teacher;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -40,12 +47,83 @@ public class EditTeacherProfile extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
+        ClassRoomClass = new ArrayList<>();
         if (intent != null && intent.hasExtra("TEACHER_ID")) {
             teacherID = intent.getStringExtra("TEACHER_ID");
             getTeacherJobInfo(teacherID);
             updateTeacherJobInfo();
-            spinnerClassRoom();
+            // spinnerClassRoom();
+            getAllClassName();
         }
+    }
+
+    private String spinnerNumberValue = "";
+    private String spinnerSectionValue = "";
+    private String spinnerClassName = "";
+    private ArrayList<ClassModel> arraySpinnerNumber;
+
+    //Class Name
+    private void getAllClassName() {
+        String[] classModelsNumber = {"", "", "", "", "", "", "", "", "", "", "", ""};
+        FirebaseFirestore.getInstance()
+                .collection("ClassRoom")
+                .whereEqualTo("type", 2)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                arraySpinnerNumber = new ArrayList<>();
+                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                    ClassModel classModel = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
+                    Log.d("spinnerClassName", classModel.getNumberId());
+                    //arraySpinnerNumber.add(classModel);
+                    FirebaseFirestore.getInstance().collection("ClassRoom")
+                            .document(classModel.getNumberId())
+                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            //TODO:: GEt CLASS Name
+                            ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
+                            spinnerClassName = classModelNumber.getNumber();
+                            FirebaseFirestore.getInstance().collection("ClassRoom")
+                                    .document(classModel.getSectionId())
+                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    //TODO:: GEt CLASS Name
+                                    ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
+                                    spinnerClassName = spinnerClassName + classModelNumber.getSection();
+                                    Log.d("spinnerClassName", spinnerClassName + "");
+                                }
+                            });
+                            Log.d("spinnerClassName", classModelNumber.getNumber() + "");
+                        }
+                    });
+                    classModelsNumber[i] = spinnerClassName;
+                    Log.d("spinnerClassName", spinnerClassName);
+                }
+            }
+        });
+        /*ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, classModelsNumber);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // The drop down view
+        binding.spinnerClassRoom.setAdapter(spinnerArrayAdapter);
+        binding.spinnerClassRoom.setSelection(0, true);
+        binding.spinnerClassRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // spinnerNumberValue = parent.getItemAtPosition(position).toString();
+                spinnerNumberValue = arraySpinnerNumber.get(position).getNumberId();
+                spinnerSectionValue = arraySpinnerNumber.get(position).getSectionId();
+                if (!ClassRoomClass.contains(parent.getItemAtPosition(position).toString())) {
+                    ClassRoomClass.add(parent.getItemAtPosition(position).toString());
+                    setTag();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
     }
 
     private void spinnerClassRoom() {
@@ -100,9 +178,9 @@ public class EditTeacherProfile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.getResult().isEmpty() || task.getResult() == null) {
-                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1","",new ArrayList<>());
+                    Teacher teacher = new Teacher(teacherID, "", "", "", "", "", "", "", "1", "", new ArrayList<>());
                     createTeacherInfoJob(teacher);
-                }else {
+                } else {
                     documentID = task.getResult().getDocuments().get(0).getId();
                     Teacher teacher = task.getResult().getDocuments().get(0).toObject(Teacher.class);
                     binding.textViewMajor.setText(teacher.getMajor());
@@ -123,22 +201,22 @@ public class EditTeacherProfile extends AppCompatActivity {
     }
 
 
-    private void updateTeacherJobInfo(){
+    private void updateTeacherJobInfo() {
         binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 firebaseFirestore.collection("Teacher")
                         .document(documentID)
-                        .update("degree",  binding.textViewDegree.getText().toString(),
-                                "major",  binding.textViewMajor.getText().toString(),
-                                "experiences",  binding.textViewExperiences.getText().toString(),
-                                "skills",  binding.textViewSkills.getText().toString(),
-                                "identification",  binding.textViewIdentification.getText().toString(),
-                                "eduCourses",  binding.textViewEducationCourses.getText().toString(),
-                                "medicalRecord",  binding.textViewMedicalRecord.getText().toString(),
-                                "accountStatement",  binding.textViewAccountStatement.getText().toString()
-                                )
+                        .update("degree", binding.textViewDegree.getText().toString(),
+                                "major", binding.textViewMajor.getText().toString(),
+                                "experiences", binding.textViewExperiences.getText().toString(),
+                                "skills", binding.textViewSkills.getText().toString(),
+                                "identification", binding.textViewIdentification.getText().toString(),
+                                "eduCourses", binding.textViewEducationCourses.getText().toString(),
+                                "medicalRecord", binding.textViewMedicalRecord.getText().toString(),
+                                "accountStatement", binding.textViewAccountStatement.getText().toString()
+                        )
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

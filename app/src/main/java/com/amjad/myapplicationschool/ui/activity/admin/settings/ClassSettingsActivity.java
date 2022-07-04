@@ -81,6 +81,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
 
     private void updateClassName(String id, ClassModel classModel) {
         binding.createClassLayout.setVisibility(View.VISIBLE);
+        binding.classNameInclude.buttonCreateOpeningGameId.setText("Update");
         binding.classNameInclude.progressBarId.setVisibility(View.GONE);
         spinnerNumber();
         spinnerSection();
@@ -89,6 +90,18 @@ public class ClassSettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.classNameInclude.progressBarId.setVisibility(View.VISIBLE);
                 //TODO Update
+                FirebaseFirestore.getInstance()
+                        .collection("ClassRoom")
+                        .document(id)
+                        .update("numberId", spinnerNumberValue, "sectionId", spinnerSectionValue);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getAllClassName();
+                        binding.createClassLayout.setVisibility(View.GONE);
+                    }
+                }, 1000);
+
             }
         });
         binding.classNameInclude.imageBackId.setOnClickListener(new View.OnClickListener() {
@@ -418,7 +431,7 @@ public class ClassSettingsActivity extends AppCompatActivity {
         Query query = FirebaseFirestore.getInstance()
                 .collection("ClassRoom")
                 .whereEqualTo("type", 2)
-                .orderBy("order", com.google.firebase.firestore.Query.Direction.DESCENDING);
+                .orderBy("order", Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<ClassModel> options = new FirestoreRecyclerOptions.Builder<ClassModel>()
                 .setQuery(query, ClassModel.class)
                 .build();
@@ -532,7 +545,6 @@ public class ClassSettingsActivity extends AppCompatActivity {
                     Log.d("asasass",classModel.getNumber());
                     classModelsNumber[i] = task.getResult().getDocuments().get(i).toObject(ClassModel.class).getNumber();
                 }
-
             }
         });
         Spinner spinner = findViewById(R.id.spinnerNumber);

@@ -62,6 +62,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                 fillText(model.getNumberEn(), holder.number_en);
                 holder.section.setVisibility(View.GONE);
                 holder.section_en.setVisibility(View.GONE);
+                holder.textViewSection.setVisibility(View.GONE);
                 break;
             case 1://Section
                 FirebaseFirestore.getInstance().collection("ClassRoom").whereEqualTo("sectionId", getSnapshots().getSnapshot(position).getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -78,6 +79,7 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
                 fillText(model.getSectionEn(), holder.section_en);
                 holder.number.setVisibility(View.GONE);
                 holder.number_en.setVisibility(View.GONE);
+                holder.textViewNumber.setVisibility(View.GONE);
                 break;
             case 2://Class Name
                 //TODO:: hid button delete from class name item (not allow to remove class name)
@@ -125,12 +127,14 @@ public class ClassSettingsAdapter extends FirestoreRecyclerAdapter<ClassModel, C
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView number, number_en, section, section_en;
+        TextView number, number_en, section, section_en, textViewSection, textViewNumber;
         ConstraintLayout classModelItem;
         ImageButton buttonDelete, buttonEdit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            textViewNumber = itemView.findViewById(R.id.textView12Number);
+            textViewSection = itemView.findViewById(R.id.textView13Section);
             number = itemView.findViewById(R.id.textViewNumber);
             number_en = itemView.findViewById(R.id.textViewNumberEn);
             section = itemView.findViewById(R.id.textViewSection);
