@@ -11,12 +11,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.amjad.myapplicationschool.R;
+import com.amjad.myapplicationschool.adapter.SpinnerAdapter;
+import com.amjad.myapplicationschool.adapter.UsersAdapter;
 import com.amjad.myapplicationschool.databinding.ActivityEditTeacherProfileBinding;
 import com.amjad.myapplicationschool.databinding.ActivityTeacherBinding;
 import com.amjad.myapplicationschool.model.ClassModel;
+import com.amjad.myapplicationschool.model.ClassName;
 import com.amjad.myapplicationschool.model.Teacher;
+import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +40,7 @@ public class EditTeacherProfile extends AppCompatActivity {
     private String teacherID;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private ArrayList<String> ClassRoomClass;
+    private ArrayList<ClassName> ClassRoomClass;
     private ArrayAdapter<CharSequence> adapterSpinnerClassRoomCurrentClass;
     private String documentID = "";
 
@@ -61,10 +66,13 @@ public class EditTeacherProfile extends AppCompatActivity {
     private String spinnerSectionValue = "";
     private String spinnerClassName = "";
     private ArrayList<ClassModel> arraySpinnerNumber;
+    private int size = 0;
+    private String classId = "";
 
     //Class Name
     private void getAllClassName() {
         String[] classModelsNumber = {"", "", "", "", "", "", "", "", "", "", "", ""};
+        ArrayList<ClassName> classNameArrayList = new ArrayList<>();
         FirebaseFirestore.getInstance()
                 .collection("ClassRoom")
                 .whereEqualTo("type", 2)
@@ -72,61 +80,58 @@ public class EditTeacherProfile extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 arraySpinnerNumber = new ArrayList<>();
-                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                    ClassModel classModel = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
-                    Log.d("spinnerClassName", classModel.getNumberId());
-                    //arraySpinnerNumber.add(classModel);
-                    FirebaseFirestore.getInstance().collection("ClassRoom")
-                            .document(classModel.getNumberId())
-                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            //TODO:: GEt CLASS Name
-                            ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
-                            spinnerClassName = classModelNumber.getNumber();
-                            FirebaseFirestore.getInstance().collection("ClassRoom")
-                                    .document(classModel.getSectionId())
-                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    //TODO:: GEt CLASS Name
-                                    ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
-                                    spinnerClassName = spinnerClassName + classModelNumber.getSection();
-                                    Log.d("spinnerClassName", spinnerClassName + "");
-                                }
-                            });
-                            Log.d("spinnerClassName", classModelNumber.getNumber() + "");
-                        }
-                    });
-                    classModelsNumber[i] = spinnerClassName;
-                    Log.d("spinnerClassName", spinnerClassName);
-                }
+                if (size < task.getResult().getDocuments().size() - 1)
+                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                        size = i;
+                        spinnerClassName = "";
+                        classId = task.getResult().getDocuments().get(i).getId();
+                        ClassModel classModel = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
+                        //arraySpinnerNumber.add(classModel);
+                        FirebaseFirestore.getInstance().collection("ClassRoom")
+                                .document(classModel.getNumberId())
+                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                //TODO:: GEt CLASS Name
+                                ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
+                                // spinnerClassName = classModelNumber.getNumber();
+                                FirebaseFirestore.getInstance().collection("ClassRoom")
+                                        .document(classModel.getSectionId())
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        //TODO:: GEt CLASS Name
+                                        ClassModel classModelSection = documentSnapshot.toObject(ClassModel.class);
+                                        spinnerClassName = classModelNumber.getNumber() + classModelSection.getSection();
+                                        classNameArrayList.add(new ClassName(classId, spinnerClassName));
+                                        //Log.d("spinnerClassName", spinnerClassName);
+                                    }
+                                });
+                            }
+                        });
+                        classModelsNumber[i] = spinnerClassName;
+                        // classNameArrayList.add(new ClassName(task.getResult().getDocuments().get(i).getId(),spinnerClassName));
+                    }
             }
         });
-        /*ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, classModelsNumber);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // The drop down view
-        binding.spinnerClassRoom.setAdapter(spinnerArrayAdapter);
+        //ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, classModelsNumber);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getApplicationContext(), classNameArrayList);
+        //spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown); // The drop down view
+        binding.spinnerClassRoom.setAdapter(spinnerAdapter);
         binding.spinnerClassRoom.setSelection(0, true);
-        binding.spinnerClassRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // spinnerNumberValue = parent.getItemAtPosition(position).toString();
-                spinnerNumberValue = arraySpinnerNumber.get(position).getNumberId();
-                spinnerSectionValue = arraySpinnerNumber.get(position).getSectionId();
-                if (!ClassRoomClass.contains(parent.getItemAtPosition(position).toString())) {
-                    ClassRoomClass.add(parent.getItemAtPosition(position).toString());
-                    setTag();
-                }
+            public void onItemClick(int position, ClassName className) {
+                binding.spinnerClassRoom.setSelection(position, true);
+                String name = className.getTitle();
+                Log.d("clickedItem", name);
+                ClassRoomClass.add(className);
+                setTag();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
+        });
     }
 
-    private void spinnerClassRoom() {
+    /*private void spinnerClassRoom() {
         adapterSpinnerClassRoomCurrentClass = ArrayAdapter.createFromResource(this, R.array.spinnerCurrentClass, R.layout.spinner_item);
         adapterSpinnerClassRoomCurrentClass.setDropDownViewResource(R.layout.spinner_item_dropdown);
         binding.spinnerClassRoom.setAdapter(adapterSpinnerClassRoomCurrentClass);
@@ -145,12 +150,12 @@ public class EditTeacherProfile extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
     private void setTag() {
         binding.chipClasssRoom.removeAllViews();
         for (int index = 0; index < ClassRoomClass.size(); index++) {
-            final String tagName = ClassRoomClass.get(index);
+            final String tagName = ClassRoomClass.get(index).getTitle();
             final Chip chip = new Chip(this);
             int paddingDp = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -191,6 +196,7 @@ public class EditTeacherProfile extends AppCompatActivity {
                     binding.textViewEducationCourses.setText(teacher.getEduCourses());
                     binding.textViewMedicalRecord.setText(teacher.getMedicalRecord());
                     binding.textViewAccountStatement.setText(teacher.getAccountStatement());
+                    //TODO:: SET Class Name Tags get fron firebase
                 }
             }
         });
@@ -205,6 +211,10 @@ public class EditTeacherProfile extends AppCompatActivity {
         binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<String> classIds = new ArrayList<>();
+                for (int i = 0; i < ClassRoomClass.size(); i++) {
+                    classIds.add(ClassRoomClass.get(i).getId()) ;
+                }
 
                 firebaseFirestore.collection("Teacher")
                         .document(documentID)
@@ -215,7 +225,8 @@ public class EditTeacherProfile extends AppCompatActivity {
                                 "identification", binding.textViewIdentification.getText().toString(),
                                 "eduCourses", binding.textViewEducationCourses.getText().toString(),
                                 "medicalRecord", binding.textViewMedicalRecord.getText().toString(),
-                                "accountStatement", binding.textViewAccountStatement.getText().toString()
+                                "accountStatement", binding.textViewAccountStatement.getText().toString(),
+                                "classRoom", classIds
                         )
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
