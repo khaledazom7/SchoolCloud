@@ -1,6 +1,7 @@
 package com.amjad.myapplicationschool.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,18 +47,16 @@ public class SpinnerAdapter extends ArrayAdapter<ClassName> {
     private View initView(int position, View convertView,
                           ViewGroup parent)
     {
-        // It is used to set our custom view.
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.class_name_item, parent, false);
         }
         TextView title = convertView.findViewById(R.id.class_name);
+        ConstraintLayout spinner_item = convertView.findViewById(R.id.spinner_item);
         ClassName currentItem = getItem(position);
-        // It is used the name to the TextView when the
-        // current item is not null.
         if (currentItem != null) {
             title.setText(currentItem.getTitle());
         }
-        title.setOnClickListener(new View.OnClickListener() {
+        spinner_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onItemClick(position, currentItem);

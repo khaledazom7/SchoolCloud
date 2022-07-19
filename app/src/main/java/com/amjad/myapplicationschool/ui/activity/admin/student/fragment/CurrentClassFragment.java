@@ -19,12 +19,20 @@ import android.widget.Spinner;
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
 import com.amjad.myapplicationschool.R;
+import com.amjad.myapplicationschool.adapter.SpinnerAdapter;
 import com.amjad.myapplicationschool.databinding.FragmentCurrentClassBinding;
+import com.amjad.myapplicationschool.model.ClassModel;
+import com.amjad.myapplicationschool.model.ClassName;
 import com.amjad.myapplicationschool.model.Student;
 import com.amjad.myapplicationschool.ui.activity.admin.student.activity.EditStudentActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +52,9 @@ public class CurrentClassFragment extends Fragment {
     ArrayList<Object> data;
     private SimpleChipAdapter adapterChip;
     ArrayList<String> data2;
+    private String spinnerClassName = "";
+    private int size = 0;
+    private ArrayList<ClassName> classNameArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,7 @@ public class CurrentClassFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCurrentClassBinding.inflate(inflater, container, false);
+        classNameArrayList = new ArrayList<>();
         return binding.getRoot();
     }
 
@@ -64,7 +76,8 @@ public class CurrentClassFragment extends Fragment {
         activity = (EditStudentActivity) getActivity();
         student = activity.getStudent();
         updateUser();
-        spinnerCurrentClass();
+        //spinnerCurrentClass();
+        getAllClassName();
         spinnerSectionCurrentClass();
         spinnerReturnedClass();
         fillStudentInfo();
@@ -76,7 +89,7 @@ public class CurrentClassFragment extends Fragment {
         binding.editTextStudentTypeCurrentClass.setText(student.getTypeCurrentClass());
         binding.editTextMajorCurrentClass.setText(student.getMajorCurrentClass());
         binding.editTextMajorCurrentClass.setText(student.getMajorCurrentClass());
-        binding.spinnerCurrentClass.setSelection(adapterSpinnerCurrentClass.getPosition(student.getCurrentClass()));
+        //binding.spinnerCurrentClass.setSelection(adapterSpinnerCurrentClass.getPosition(student.getCurrentClass()));
         binding.spinnerSectionCurrentClass.setSelection(adapterSpinnerSectionCurrentClass.getPosition(student.getSectionCurrentClass()));
         returnedClass = student.getReturnedClass();
         setTag();
@@ -93,6 +106,57 @@ public class CurrentClassFragment extends Fragment {
                 student.setSectionCurrentClass(sectionCurrentClass);
                 student.setReturnedClass(returnedClass);
                 activity.setStudent(student);
+            }
+        });
+    }
+
+
+    //Class Name
+    private void getAllClassName() {
+        FirebaseFirestore.getInstance()
+                .collection("ClassRoom")
+                .whereEqualTo("type", 2)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (size < task.getResult().getDocuments().size() - 1)
+                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                        size = i;
+                        spinnerClassName = "";
+                        String classId = task.getResult().getDocuments().get(i).getId();
+                        ClassModel classModel = task.getResult().getDocuments().get(i).toObject(ClassModel.class);
+                        FirebaseFirestore.getInstance().collection("ClassRoom")
+                                .document(classModel.getNumberId())
+                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
+                                FirebaseFirestore.getInstance().collection("ClassRoom")
+                                        .document(classModel.getSectionId())
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        //TODO:: GEt CLASS Name
+                                        ClassModel classModelSection = documentSnapshot.toObject(ClassModel.class);
+                                        spinnerClassName = classModelNumber.getNumber() + classModelSection.getSection();
+                                        ClassName className = new ClassName(classId, spinnerClassName);
+                                        classNameArrayList.add(className);
+                                    }
+                                });
+                            }
+                        });
+                    }
+            }
+        });
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), classNameArrayList);
+        binding.spinnerCurrentClass.setAdapter(spinnerAdapter);
+        binding.spinnerCurrentClass.setSelection(0, true);
+        spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, ClassName className) {
+                binding.spinnerCurrentClass.setSelection(position, true);
+                String name = className.getTitle();
+                currentClass = className.getId();
             }
         });
     }
