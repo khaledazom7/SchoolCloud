@@ -56,12 +56,12 @@ public class SpinnerAdapter extends ArrayAdapter<ClassName> {
         if (currentItem != null) {
             title.setText(currentItem.getTitle());
         }
-        spinner_item.setOnClickListener(new View.OnClickListener() {
+        /*spinner_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onItemClick(position, currentItem);
             }
-        });
+        });*/
         return convertView;
     }
 

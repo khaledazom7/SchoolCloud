@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
@@ -47,6 +48,7 @@ public class CurrentClassFragment extends Fragment {
     private ArrayAdapter<CharSequence> adapterSpinnerSectionCurrentClass;
     private ArrayAdapter<CharSequence> adapterSpinnerReturnedCurrentClass;
     private String currentClass = "";
+    private int currentClassSpinnerPosition = 0;
     private String sectionCurrentClass = "";
     private ArrayList<String> returnedClass;
     ArrayList<Object> data;
@@ -55,6 +57,7 @@ public class CurrentClassFragment extends Fragment {
     private String spinnerClassName = "";
     private int size = 0;
     private ArrayList<ClassName> classNameArrayList;
+    private SpinnerAdapter spinnerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class CurrentClassFragment extends Fragment {
         //binding.spinnerCurrentClass.setSelection(adapterSpinnerCurrentClass.getPosition(student.getCurrentClass()));
         binding.spinnerSectionCurrentClass.setSelection(adapterSpinnerSectionCurrentClass.getPosition(student.getSectionCurrentClass()));
         returnedClass = student.getReturnedClass();
+        currentClass = student.getCurrentClass();
         setTag();
     }
 
@@ -141,6 +145,12 @@ public class CurrentClassFragment extends Fragment {
                                         spinnerClassName = classModelNumber.getNumber() + classModelSection.getSection();
                                         ClassName className = new ClassName(classId, spinnerClassName);
                                         classNameArrayList.add(className);
+                                        if (currentClass.equals(classId)) {
+                                            currentClassSpinnerPosition = classNameArrayList.size() - 1;
+                                            binding.spinnerCurrentClass.setSelection(currentClassSpinnerPosition, true);
+                                            spinnerAdapter.notifyDataSetChanged();
+                                            binding.spinnerCurrentClass.setSelection(currentClassSpinnerPosition, true);
+                                        }
                                     }
                                 });
                             }
@@ -148,17 +158,37 @@ public class CurrentClassFragment extends Fragment {
                     }
             }
         });
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), classNameArrayList);
+
+        spinnerAdapter = new SpinnerAdapter(getContext(), classNameArrayList);
         binding.spinnerCurrentClass.setAdapter(spinnerAdapter);
-        binding.spinnerCurrentClass.setSelection(0, true);
-        spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
+        //binding.spinnerCurrentClass.setSelection(currentClassSpinnerPosition, true);
+        binding.spinnerCurrentClass.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent,
+                                               View view, int position, long id) {
+
+                        // It returns the clicked item.
+                        ClassName className = (ClassName)
+                                parent.getItemAtPosition(position);
+                        binding.spinnerCurrentClass.setSelection(position, true);
+                        String name = className.getTitle();
+                        currentClass = className.getId();
+                        Toast.makeText(getContext(), currentClass + " selected", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+        /*spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, ClassName className) {
                 binding.spinnerCurrentClass.setSelection(position, true);
                 String name = className.getTitle();
                 currentClass = className.getId();
             }
-        });
+        });*/
     }
 
     private void spinnerCurrentClass() {

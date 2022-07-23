@@ -48,7 +48,10 @@ public class EditTeacherProfile extends AppCompatActivity {
     private String spinnerClassName = "";
     private ArrayList<ClassModel> arraySpinnerNumber;
     private int size = 0;
-    ArrayList<ClassName> classNameArrayList;
+    private ArrayList<ClassName> classNameArrayList;
+    private ArrayList<String> classIds;
+    private SpinnerAdapter spinnerAdapter;
+    private ArrayList<String> classNameTea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,13 @@ public class EditTeacherProfile extends AppCompatActivity {
                                         spinnerClassName = classModelNumber.getNumber() + classModelSection.getSection();
                                         ClassName className = new ClassName(classId, spinnerClassName);
                                         classNameArrayList.add(className);
+                                        if (classNameTea.contains(classId)) {
+                                            if (!ClassRoomClass.contains(className)) {
+                                                spinnerAdapter.notifyDataSetChanged();
+                                                ClassRoomClass.add(className);
+                                                setTag();
+                                            }
+                                        }
                                     }
                                 });
                             }
@@ -107,10 +117,25 @@ public class EditTeacherProfile extends AppCompatActivity {
                     }
             }
         });
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getApplicationContext(), classNameArrayList);
+        spinnerAdapter = new SpinnerAdapter(getApplicationContext(), classNameArrayList);
         binding.spinnerClassRoom.setAdapter(spinnerAdapter);
-        binding.spinnerClassRoom.setSelection(0, true);
-        spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
+        binding.spinnerClassRoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ClassName className = (ClassName) parent.getItemAtPosition(position);
+                if (!ClassRoomClass.contains(className)) {
+                    binding.spinnerClassRoom.setSelection(position, true);
+                    String name = className.getTitle();
+                    ClassRoomClass.add(className);
+                    setTag();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        /*spinnerAdapter.onItemSetOnClickListener(new SpinnerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, ClassName className) {
                 binding.spinnerClassRoom.setSelection(position, true);
@@ -119,13 +144,16 @@ public class EditTeacherProfile extends AppCompatActivity {
                 ClassRoomClass.add(className);
                 setTag();
             }
-        });
+        });*/
     }
 
     private void setTag() {
+        Log.d("aasdsadasdasdasda", ClassRoomClass.size() + "");
         binding.chipClasssRoom.removeAllViews();
         for (int index = 0; index < ClassRoomClass.size(); index++) {
-            final String tagName = ClassRoomClass.get(index).getTitle();
+            ClassName className = ClassRoomClass.get(index);
+            final String tagName = className.getTitle();
+            final String tagId = className.getId();
             final Chip chip = new Chip(this);
             int paddingDp = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -139,7 +167,7 @@ public class EditTeacherProfile extends AppCompatActivity {
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ClassRoomClass.remove(tagName);
+                    ClassRoomClass.remove(className);
                     binding.chipClasssRoom.removeView(chip);
                 }
             });
@@ -167,7 +195,7 @@ public class EditTeacherProfile extends AppCompatActivity {
                     binding.textViewMedicalRecord.setText(teacher.getMedicalRecord());
                     binding.textViewAccountStatement.setText(teacher.getAccountStatement());
                     //TODO:: Fetch CLass Name Firebase
-                    for (int i = 0; i < teacher.getClassRoom().size(); i++) {
+                    /*for (int i = 0; i < teacher.getClassRoom().size(); i++) {
                         String classId = teacher.getClassRoom().get(i);
                         FirebaseFirestore.getInstance().collection("ClassRoom")
                                 .document(teacher.getClassRoom().get(i))
@@ -181,7 +209,6 @@ public class EditTeacherProfile extends AppCompatActivity {
                                         .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        //TODO:: GEt CLASS Name
                                         ClassModel classModelNumber = documentSnapshot.toObject(ClassModel.class);
                                         // spinnerClassName = classModelNumber.getNumber();
                                         FirebaseFirestore.getInstance().collection("ClassRoom")
@@ -189,7 +216,6 @@ public class EditTeacherProfile extends AppCompatActivity {
                                                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                //TODO:: GEt CLASS Name
                                                 ClassModel classModelSection = documentSnapshot.toObject(ClassModel.class);
                                                 spinnerClassName = classModelNumber.getNumber() + classModelSection.getSection();
                                                 ClassName className = new ClassName(classId, spinnerClassName);
@@ -202,7 +228,8 @@ public class EditTeacherProfile extends AppCompatActivity {
                             }
                         });
                     }
-                    setTag();
+                    setTag();*/
+                    classNameTea = new ArrayList<>(teacher.getClassRoom());
                 }
             }
         });
@@ -217,9 +244,11 @@ public class EditTeacherProfile extends AppCompatActivity {
         binding.buttonEditTeacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> classIds = new ArrayList<>();
+                Log.d("asdadasdasd", "asdasd");
+                classIds = new ArrayList<>();
                 for (int i = 0; i < ClassRoomClass.size(); i++) {
                     classIds.add(ClassRoomClass.get(i).getId());
+                    Log.d("classIdsas", ClassRoomClass.get(i).getId());
                 }
                 firebaseFirestore.collection("Teacher")
                         .document(documentID)
